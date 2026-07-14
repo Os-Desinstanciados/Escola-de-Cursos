@@ -9,9 +9,8 @@ public class CategoriaProfile : Profile
     public CategoriaProfile()
     {
         CreateMap<CadastrarCategoriaViewModel, Categoria>();
-
         CreateMap<Categoria, EditarCategoriaViewModel>();
-
         CreateMap<EditarCategoriaViewModel, Categoria>();
+        CreateMap<Categoria, ExcluirCategoriaViewModel>();
     }
 }

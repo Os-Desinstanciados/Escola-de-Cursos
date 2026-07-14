@@ -77,6 +77,31 @@ public class CategoriaController : Controller
     }
 
     [HttpGet]
+    public IActionResult Excluir(Guid id)
+    {
+        Categoria? categoria = servicoCategoria.SelecionarPorId(id);
+
+        if (categoria is null)
+            return NotFound();
+
+        ExcluirCategoriaViewModel excluirVM =
+            mapper.Map<ExcluirCategoriaViewModel>(categoria);
+
+        return View(excluirVM);
+    }
+
+    [HttpPost]
+    public IActionResult Excluir(ExcluirCategoriaViewModel excluirVM)
+    {
+        Result resultado = servicoCategoria.Excluir(excluirVM.Id);
+
+        if (resultado.IsFailed)
+            return View(excluirVM);
+
+        return RedirectToAction(nameof(Listar));
+    }
+
+    [HttpGet]
     public IActionResult Listar()
     {
         List<Categoria> categorias = servicoCategoria.SelecionarTodos();

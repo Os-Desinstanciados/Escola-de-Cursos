@@ -20,3 +20,8 @@ public record EditarCategoriaViewModel(
     [StringLength(35, MinimumLength = 3, ErrorMessage = "O campo \"Nome\" deve conter entre 3 e 35 caracteres.")]
     string Nome
 );
+
+public record ExcluirCategoriaViewModel(
+    Guid Id,
+    string Nome
+);

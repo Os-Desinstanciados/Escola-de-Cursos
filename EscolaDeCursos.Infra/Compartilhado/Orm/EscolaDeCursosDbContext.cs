@@ -1,18 +1,17 @@
-using System.Reflection;
+using EscolaDeCursos.Infra.Compartilhado.Orm.Config;
 using EscolaDeCursos.Dominio.Modulos.ModuloCategoria;
 using Microsoft.EntityFrameworkCore;
 
 namespace EscolaDeCursos.Infra.Compartilhado.Orm;
 
 public sealed class EscolaDeCursosDbContext(
-    DbContextOptions<EscolaDeCursosDbContext> options) : DbContext(options)
+    DbContextOptions<EscolaDeCursosDbContext> options
+    ) : DbContext(options)
 {
+    public DbSet<Categoria> Categorias => Set<Categoria>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        Assembly assembly = typeof(EscolaDeCursosDbContext).Assembly;
-
-        modelBuilder.ApplyConfigurationsFromAssembly(assembly);
+        modelBuilder.ApplyConfiguration(new CategoriaConfiguration());
     }
-
-    public DbSet<Categoria> Categorias { get; set; }
 }

@@ -40,6 +40,16 @@ public class ServicoCategoria : ServicoBase<Categoria>
         return Result.Ok();
     }
 
+    public Result Excluir(Guid id)
+    {
+        bool conseguiuExcluir = repositorio.Excluir(id);
+
+        if (!conseguiuExcluir)
+            return Falha(string.Empty, "Categoria não encontrada.");
+
+        return Result.Ok();
+    }
+
     public Categoria? SelecionarPorId(Guid id)
     {
         return repositorio.SelecionarPorId(id);

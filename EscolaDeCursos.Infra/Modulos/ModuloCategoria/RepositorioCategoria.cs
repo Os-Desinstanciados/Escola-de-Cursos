@@ -35,7 +35,16 @@ public class RepositorioCategoria : IRepositorioCategoria
 
     public bool Excluir(Guid idSelecionado)
     {
-        throw new NotImplementedException();
+        Categoria? categoriaSelecionada = SelecionarPorId(idSelecionado);
+
+        if (categoriaSelecionada is null)
+            return false;
+
+        dbContext.Categorias.Remove(categoriaSelecionada);
+
+        dbContext.SaveChanges();
+
+        return true;
     }
 
     public List<Categoria> Filtrar(Func<Categoria, bool> filtro)
