@@ -25,7 +25,25 @@ public class ServicoCategoria : ServicoBase<Categoria>
         return Result.Ok();
     }
 
+    public Result Editar(Guid id, Categoria categoria)
+    {
+        Result resultadoValidacao = ValidarEntidade(categoria);
 
+        if (resultadoValidacao.IsFailed)
+            return resultadoValidacao;
+
+        bool conseguiuEditar = repositorio.Editar(id, categoria);
+
+        if (!conseguiuEditar)
+            return Falha(string.Empty, "Categoria não encontrada.");
+
+        return Result.Ok();
+    }
+
+    public Categoria? SelecionarPorId(Guid id)
+    {
+        return repositorio.SelecionarPorId(id);
+    }
 
     public List<Categoria> SelecionarTodos()
     {

@@ -21,7 +21,16 @@ public class RepositorioCategoria : IRepositorioCategoria
 
     public bool Editar(Guid idSelecionado, Categoria entidadeAtualizada)
     {
-        throw new NotImplementedException();
+        Categoria? categoriaSelecionada = SelecionarPorId(idSelecionado);
+
+        if (categoriaSelecionada is null)
+            return false;
+
+        categoriaSelecionada.Atualizar(entidadeAtualizada);
+
+        dbContext.SaveChanges();
+
+        return true;
     }
 
     public bool Excluir(Guid idSelecionado)
@@ -36,7 +45,7 @@ public class RepositorioCategoria : IRepositorioCategoria
 
     public Categoria? SelecionarPorId(Guid idSelecionado)
     {
-        throw new NotImplementedException();
+        return dbContext.Categorias.Find(idSelecionado);
     }
 
     public List<Categoria> SelecionarTodos()

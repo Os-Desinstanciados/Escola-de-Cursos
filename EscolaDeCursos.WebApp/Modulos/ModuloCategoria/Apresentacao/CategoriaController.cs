@@ -10,7 +10,6 @@ namespace EscolaDeCursos.WebApp.Modulos.ModuloCategoria.Apresentacao;
 public class CategoriaController : Controller
 {
     private readonly ServicoCategoria servicoCategoria;
-
     private readonly IMapper mapper;
 
     public CategoriaController(
@@ -22,6 +21,7 @@ public class CategoriaController : Controller
         this.mapper = mapper;
     }
 
+    [HttpGet]
     public IActionResult Cadastrar()
     {
         return View();
@@ -43,6 +43,40 @@ public class CategoriaController : Controller
         return RedirectToAction(nameof(Listar));
     }
 
+    [HttpGet]
+    public IActionResult Editar(Guid id)
+    {
+        Categoria? categoria = servicoCategoria.SelecionarPorId(id);
+
+        if (categoria is null)
+            return NotFound();
+
+        EditarCategoriaViewModel editarVM =
+            mapper.Map<EditarCategoriaViewModel>(categoria);
+
+        return View(editarVM);
+    }
+
+    [HttpPost]
+    public IActionResult Editar(EditarCategoriaViewModel editarVM)
+    {
+        if (!ModelState.IsValid)
+            return View(editarVM);
+
+        Categoria categoria = mapper.Map<Categoria>(editarVM);
+
+        Result resultado = servicoCategoria.Editar(
+            editarVM.Id,
+            categoria
+        );
+
+        if (resultado.IsFailed)
+            return View(editarVM);
+
+        return RedirectToAction(nameof(Listar));
+    }
+
+    [HttpGet]
     public IActionResult Listar()
     {
         List<Categoria> categorias = servicoCategoria.SelecionarTodos();

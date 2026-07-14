@@ -11,7 +11,7 @@ public class Categoria : EntidadeBase<Categoria>
 
     public override void Atualizar(Categoria entidadeAtualizada)
     {
-        throw new NotImplementedException();
+        Nome = entidadeAtualizada.Nome;
     }
 
     public override List<string> Validar()
