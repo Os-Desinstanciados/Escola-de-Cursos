@@ -1,4 +1,5 @@
 using System.Reflection;
+using EscolaDeCursos.Dominio.ModuloCategoria;
 using Microsoft.EntityFrameworkCore;
 
 namespace EscolaDeCursos.Infra.Compartilhado.Orm;
@@ -12,4 +13,6 @@ public sealed class EscolaDeCursosDbContext(
 
         modelBuilder.ApplyConfigurationsFromAssembly(assembly);
     }
+
+    public DbSet<Categoria> Categorias { get; set; }
 }

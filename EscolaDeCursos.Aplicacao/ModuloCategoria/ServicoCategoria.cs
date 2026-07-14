@@ -13,6 +13,9 @@ public class ServicoCategoria : ServicoBase<Categoria>
         this.repositorio = repositorio;
     }
 
-
+    public List<Categoria> SelecionarTodos()
+    {
+        return repositorio.SelecionarTodos();
+    }
 
 }

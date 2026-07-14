@@ -1,0 +1,63 @@
+@model List<EscolaDeCursos.Dominio.ModuloCategoria.Categoria>
+
+@{
+    Layout = "_Layout";
+    ViewBag.Titulo = "Visualização de Categoria";
+}
+
+<div class="d-flex flex-column gap-3">
+
+    <div>
+        <a class="btn btn-outline-secondary"
+           asp-controller="Categoria"
+           asp-action="Cadastrar">
+            Cadastrar novo/a
+        </a>
+    </div>
+
+    <hr />
+
+    <table class="table align-middle">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th class="text-end">Ações</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var categoria in Model)
+            {
+                <tr>
+                    <td>@categoria.Id</td>
+                    <td>@categoria.Nome</td>
+
+                    <td class="text-end">
+                        <a class="btn btn-sm btn-outline-secondary"
+                           asp-controller="Categoria"
+                           asp-action="Detalhes"
+                           asp-route-id="@categoria.Id">
+                            🔍
+                        </a>
+
+                        <a class="btn btn-sm btn-outline-secondary"
+                           asp-controller="Categoria"
+                           asp-action="Editar"
+                           asp-route-id="@categoria.Id">
+                            ✏️
+                        </a>
+
+                        <a class="btn btn-sm btn-outline-secondary"
+                           asp-controller="Categoria"
+                           asp-action="Excluir"
+                           asp-route-id="@categoria.Id">
+                            🗑️
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
