@@ -1,8 +1,8 @@
-using EscolaDeCursos.Dominio.ModuloCategoria;
+using EscolaDeCursos.Dominio.Modulos.ModuloCategoria;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EscolaDeCursos.Infra.ModuloCategoria;
+namespace EscolaDeCursos.Infra.Modulos.ModuloCategoria;
 
 public class MapeamentoCategoria : IEntityTypeConfiguration<Categoria>
 {

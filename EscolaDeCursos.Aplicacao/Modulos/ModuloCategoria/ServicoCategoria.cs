@@ -1,8 +1,8 @@
 using EscolaDeCursos.Aplicacao.Compartilhado;
-using EscolaDeCursos.Dominio.ModuloCategoria;
+using EscolaDeCursos.Dominio.Modulos.ModuloCategoria;
 using FluentResults;
 
-namespace EscolaDeCursos.Aplicacao.ModuloCategoria;
+namespace EscolaDeCursos.Aplicacao.Modulos.ModuloCategoria;
 
 public class ServicoCategoria : ServicoBase<Categoria>
 {
@@ -12,6 +12,20 @@ public class ServicoCategoria : ServicoBase<Categoria>
     {
         this.repositorio = repositorio;
     }
+
+    public Result Cadastrar(Categoria categoria)
+    {
+        Result resultadoValidacao = ValidarEntidade(categoria);
+
+        if (resultadoValidacao.IsFailed)
+            return resultadoValidacao;
+
+        repositorio.Cadastrar(categoria);
+
+        return Result.Ok();
+    }
+
+
 
     public List<Categoria> SelecionarTodos()
     {

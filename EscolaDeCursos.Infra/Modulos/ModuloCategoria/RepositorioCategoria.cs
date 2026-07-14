@@ -1,7 +1,7 @@
-using EscolaDeCursos.Dominio.ModuloCategoria;
+using EscolaDeCursos.Dominio.Modulos.ModuloCategoria;
 using EscolaDeCursos.Infra.Compartilhado.Orm;
 
-namespace EscolaDeCursos.Infra.ModuloCategoria;
+namespace EscolaDeCursos.Infra.Modulos.ModuloCategoria;
 
 public class RepositorioCategoria : IRepositorioCategoria
 {
@@ -14,7 +14,9 @@ public class RepositorioCategoria : IRepositorioCategoria
 
     public void Cadastrar(Categoria entidade)
     {
-        throw new NotImplementedException();
+        dbContext.Categorias.Add(entidade);
+
+        dbContext.SaveChanges();
     }
 
     public bool Editar(Guid idSelecionado, Categoria entidadeAtualizada)

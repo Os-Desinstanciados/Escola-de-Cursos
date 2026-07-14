@@ -1,4 +1,4 @@
-using EscolaDeCursos.Aplicacao.ModuloCategoria;
+using EscolaDeCursos.Aplicacao.Modulos.ModuloCategoria;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

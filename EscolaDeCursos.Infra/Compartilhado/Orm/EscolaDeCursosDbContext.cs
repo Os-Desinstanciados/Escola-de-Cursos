@@ -1,5 +1,5 @@
 using System.Reflection;
-using EscolaDeCursos.Dominio.ModuloCategoria;
+using EscolaDeCursos.Dominio.Modulos.ModuloCategoria;
 using Microsoft.EntityFrameworkCore;
 
 namespace EscolaDeCursos.Infra.Compartilhado.Orm;

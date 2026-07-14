@@ -1,7 +1,7 @@
-using EscolaDeCursos.Dominio.ModuloCategoria;
+using EscolaDeCursos.Dominio.Modulos.ModuloCategoria;
 using EscolaDeCursos.Infra.Comartilhado.Logging;
 using EscolaDeCursos.Infra.Compartilhado.Orm;
-using EscolaDeCursos.Infra.ModuloCategoria;
+using EscolaDeCursos.Infra.Modulos.ModuloCategoria;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
