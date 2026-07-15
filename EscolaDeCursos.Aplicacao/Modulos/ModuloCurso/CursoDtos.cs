@@ -17,6 +17,14 @@ public record CadastrarCursoDto(
     int CargaHoraria
 );
 
+public record EditarCursoDto(
+    Guid Id,
+    string Nome,
+    Guid CategoriaId,
+    NivelCurso Nivel,
+    int CargaHoraria
+);
+
 public record DetalhesCursoDto(
     Guid Id,
     string Nome,

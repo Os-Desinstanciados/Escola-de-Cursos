@@ -22,7 +22,16 @@ public class RepositorioCursoEmOrm : IRepositorioCurso
 
     public bool Editar(Guid idSelecionado, Curso entidadeAtualizada)
     {
-        throw new NotImplementedException();
+        Curso? cursoSelecionado = SelecionarPorId(idSelecionado);
+
+        if (cursoSelecionado is null)
+            return false;
+
+        cursoSelecionado.Atualizar(entidadeAtualizada);
+
+        dbContext.SaveChanges();
+
+        return true;
     }
 
     public bool Excluir(Guid idSelecionado)
