@@ -9,7 +9,7 @@ public record ListarTurmasViewModel(
     DateTime DataInicio,
     DateTime DataTermino,
     int NumeroMaximoAlunos,
-    Guid InstrutoId,
+    Guid InstrutorId,
     string InstrutorNome
 );
 
@@ -65,7 +65,7 @@ public record ExcluirTurmaViewModel(
     DateTime DataInicio,
     DateTime DataTermino,
     int NumeroMaximoAlunos,
-    Guid InstrutoId,
+    Guid InstrutorId,
     string InstrutorNome
 );
 
