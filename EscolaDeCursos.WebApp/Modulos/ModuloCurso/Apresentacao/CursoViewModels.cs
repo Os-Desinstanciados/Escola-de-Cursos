@@ -1,0 +1,1 @@
+namespace EscolaDeCursos.WebApp.Modulos.ModuloCurso.Apresentacao;

@@ -1,0 +1,1 @@
+namespace EscolaDeCursos.Aplicacao.Modulos.ModuloCurso;
