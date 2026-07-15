@@ -29,7 +29,7 @@ public record CadastrarTurmaViewModel(
     [Range(0.01, double.MaxValue, ErrorMessage = "O campo \"Número Máximo de Alunos\" deve ser maior que zero.")]
     int NumeroMaximoAlunos,
 
-    Guid? InstrutorId,
+    Guid InstrutorId,
 
     [ValidateNever]
     List<OpcaoInstrutorViewModel> Instrutores
@@ -53,7 +53,7 @@ public record EditarTurmaViewModel(
     [Range(0.01, double.MaxValue, ErrorMessage = "O campo \"Número Máximo de Alunos\" deve ser maior que zero.")]
     int NumeroMaximoAlunos,
 
-    Guid? InstrutorId,
+    Guid InstrutorId,
 
     [ValidateNever]
     List<OpcaoInstrutorViewModel> Instrutores
