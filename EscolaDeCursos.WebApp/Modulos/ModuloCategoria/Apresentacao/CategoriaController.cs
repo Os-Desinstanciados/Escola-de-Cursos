@@ -1,111 +1,125 @@
 using AutoMapper;
-using EscolaDeCursos.Aplicacao.Modulos.ModuloCategoria;
-using EscolaDeCursos.Dominio.Modulos.ModuloCategoria;
-using EscolaDeCursos.WebApp.Modulos.ModuloCategoria.Apresentacao.ViewModels;
 using FluentResults;
+using EscolaDeCursos.WebApp.Compartilhado.Extensions;
+using EscolaDeCursos.Aplicacao.Modulos.ModuloCategoria;
 using Microsoft.AspNetCore.Mvc;
+using EscolaDeCursos.WebApp.Modulos.ModuloCategoria.Apresentacao.ViewModels;
 
 namespace EscolaDeCursos.WebApp.Modulos.ModuloCategoria.Apresentacao;
 
-public class CategoriaController : Controller
+public class CategoriaController(
+    ServicoCategoria servicoCategoria,
+    IMapper mapeador
+) : Controller
 {
-    private readonly ServicoCategoria servicoCategoria;
-    private readonly IMapper mapper;
-
-    public CategoriaController(
-        ServicoCategoria servicoCategoria,
-        IMapper mapper
-    )
+    [HttpGet]
+    public ActionResult Listar()
     {
-        this.servicoCategoria = servicoCategoria;
-        this.mapper = mapper;
+        List<ListarCategoriasDto> dtos = servicoCategoria.SelecionarTodos();
+
+        List<ListarCategoriaViewModel> listarVms =
+            mapeador.Map<List<ListarCategoriaViewModel>>(dtos);
+
+        return View(listarVms);
     }
 
     [HttpGet]
-    public IActionResult Cadastrar()
+    public ActionResult Cadastrar()
     {
-        return View();
+        CadastrarCategoriaViewModel cadastrarVm =
+            new CadastrarCategoriaViewModel(string.Empty);
+
+        return View(cadastrarVm);
     }
 
     [HttpPost]
-    public IActionResult Cadastrar(CadastrarCategoriaViewModel cadastrarVM)
+    public ActionResult Cadastrar(CadastrarCategoriaViewModel cadastrarVm)
     {
         if (!ModelState.IsValid)
-            return View(cadastrarVM);
+            return View(cadastrarVm);
 
-        Categoria categoria = mapper.Map<Categoria>(cadastrarVM);
+        CadastrarCategoriaDto dto =
+            mapeador.Map<CadastrarCategoriaDto>(cadastrarVm);
 
-        Result resultado = servicoCategoria.Cadastrar(categoria);
+        Result resultado = servicoCategoria.Cadastrar(dto);
 
         if (resultado.IsFailed)
-            return View(cadastrarVM);
+        {
+            ModelState.AddModelError(resultado);
+
+            return View(cadastrarVm);
+        }
 
         return RedirectToAction(nameof(Listar));
     }
 
     [HttpGet]
-    public IActionResult Editar(Guid id)
+    public ActionResult Editar(Guid id)
     {
-        Categoria? categoria = servicoCategoria.SelecionarPorId(id);
+        Result<DetalhesCategoriaDto> resultado =
+            servicoCategoria.SelecionarPorId(id);
 
-        if (categoria is null)
-            return NotFound();
+        if (resultado.IsFailed)
+        {
+            TempData.AddErrorMessage(resultado);
 
-        EditarCategoriaViewModel editarVM =
-            mapper.Map<EditarCategoriaViewModel>(categoria);
+            return RedirectToAction(nameof(Listar));
+        }
 
-        return View(editarVM);
+        EditarCategoriaViewModel editarVm =
+            mapeador.Map<EditarCategoriaViewModel>(resultado.Value);
+
+        return View(editarVm);
     }
 
     [HttpPost]
-    public IActionResult Editar(EditarCategoriaViewModel editarVM)
+    public ActionResult Editar(EditarCategoriaViewModel editarVm)
     {
         if (!ModelState.IsValid)
-            return View(editarVM);
+            return View(editarVm);
 
-        Categoria categoria = mapper.Map<Categoria>(editarVM);
+        EditarCategoriaDto dto =
+            mapeador.Map<EditarCategoriaDto>(editarVm);
 
-        Result resultado = servicoCategoria.Editar(
-            editarVM.Id,
-            categoria
-        );
+        Result resultado = servicoCategoria.Editar(dto);
 
         if (resultado.IsFailed)
-            return View(editarVM);
+        {
+            ModelState.AddModelError(resultado);
+
+            return View(editarVm);
+        }
 
         return RedirectToAction(nameof(Listar));
     }
 
     [HttpGet]
-    public IActionResult Excluir(Guid id)
+    public ActionResult Excluir(Guid id)
     {
-        Categoria? categoria = servicoCategoria.SelecionarPorId(id);
+        Result<DetalhesCategoriaDto> resultado =
+            servicoCategoria.SelecionarPorId(id);
 
-        if (categoria is null)
-            return NotFound();
+        if (resultado.IsFailed)
+        {
+            TempData.AddErrorMessage(resultado);
 
-        ExcluirCategoriaViewModel excluirVM =
-            mapper.Map<ExcluirCategoriaViewModel>(categoria);
+            return RedirectToAction(nameof(Listar));
+        }
 
-        return View(excluirVM);
+        ExcluirCategoriaViewModel excluirVm =
+            mapeador.Map<ExcluirCategoriaViewModel>(resultado.Value);
+
+        return View(excluirVm);
     }
 
     [HttpPost]
-    public IActionResult Excluir(ExcluirCategoriaViewModel excluirVM)
+    public ActionResult Excluir(ExcluirCategoriaViewModel excluirVm)
     {
-        Result resultado = servicoCategoria.Excluir(excluirVM.Id);
+        Result resultado = servicoCategoria.Excluir(excluirVm.Id);
 
         if (resultado.IsFailed)
-            return View(excluirVM);
+            TempData.AddErrorMessage(resultado);
 
         return RedirectToAction(nameof(Listar));
-    }
-
-    [HttpGet]
-    public IActionResult Listar()
-    {
-        List<Categoria> categorias = servicoCategoria.SelecionarTodos();
-
-        return View(categorias);
     }
 }

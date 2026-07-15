@@ -13,26 +13,42 @@ public class ServicoCategoria : ServicoBase<Categoria>
         this.repositorio = repositorio;
     }
 
-    public Result Cadastrar(Categoria categoria)
+    public Result Cadastrar(CadastrarCategoriaDto dto)
     {
-        Result resultadoValidacao = ValidarEntidade(categoria);
+        if (ExisteCategoriaComMesmoNome(dto.Nome))
+            return Falha(nameof(dto.Nome), "Já existe uma categoria com este nome.");
+
+        Categoria novaCategoria = new Categoria
+        {
+            Nome = dto.Nome
+        };
+
+        Result resultadoValidacao = ValidarEntidade(novaCategoria);
 
         if (resultadoValidacao.IsFailed)
             return resultadoValidacao;
 
-        repositorio.Cadastrar(categoria);
+        repositorio.Cadastrar(novaCategoria);
 
         return Result.Ok();
     }
 
-    public Result Editar(Guid id, Categoria categoria)
+    public Result Editar(EditarCategoriaDto dto)
     {
-        Result resultadoValidacao = ValidarEntidade(categoria);
+        if (ExisteCategoriaComMesmoNome(dto.Nome, dto.Id))
+            return Falha(nameof(dto.Nome), "Já existe uma categoria com este nome.");
+
+        Categoria categoriaAtualizada = new Categoria
+        {
+            Nome = dto.Nome
+        };
+
+        Result resultadoValidacao = ValidarEntidade(categoriaAtualizada);
 
         if (resultadoValidacao.IsFailed)
             return resultadoValidacao;
 
-        bool conseguiuEditar = repositorio.Editar(id, categoria);
+        bool conseguiuEditar = repositorio.Editar(dto.Id, categoriaAtualizada);
 
         if (!conseguiuEditar)
             return Falha(string.Empty, "Categoria não encontrada.");
@@ -42,22 +58,49 @@ public class ServicoCategoria : ServicoBase<Categoria>
 
     public Result Excluir(Guid id)
     {
-        bool conseguiuExcluir = repositorio.Excluir(id);
+        Categoria? categoria = repositorio.SelecionarPorId(id);
 
-        if (!conseguiuExcluir)
+        if (categoria == null)
             return Falha(string.Empty, "Categoria não encontrada.");
+
+        repositorio.Excluir(id);
 
         return Result.Ok();
     }
 
-    public Categoria? SelecionarPorId(Guid id)
+    private bool ExisteCategoriaComMesmoNome(string nome, Guid? idIgnorado = null)
     {
-        return repositorio.SelecionarPorId(id);
+        string nomeNormalizado = nome.Trim().ToLowerInvariant();
+
+        return repositorio
+            .SelecionarTodos()
+            .Any(c =>
+                c.Id != idIgnorado &&
+                c.Nome.Trim().ToLowerInvariant() == nomeNormalizado
+            );
     }
 
-    public List<Categoria> SelecionarTodos()
+    public List<ListarCategoriasDto> SelecionarTodos()
     {
-        return repositorio.SelecionarTodos();
+        return repositorio
+            .SelecionarTodos()
+            .Select(c => new ListarCategoriasDto(
+                c.Id,
+                c.Nome
+            ))
+            .ToList();
     }
 
+    public Result<DetalhesCategoriaDto> SelecionarPorId(Guid id)
+    {
+        Categoria? categoria = repositorio.SelecionarPorId(id);
+
+        if (categoria == null)
+            return Result.Fail("Categoria não encontrada.");
+
+        return Result.Ok(new DetalhesCategoriaDto(
+            categoria.Id,
+            categoria.Nome
+        ));
+    }
 }
