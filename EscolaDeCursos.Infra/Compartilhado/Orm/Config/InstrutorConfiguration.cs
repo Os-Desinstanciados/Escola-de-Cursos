@@ -2,7 +2,7 @@ using EscolaDeCursos.Dominio.Modulos.ModuloInstrutor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EAgenda.WebApp.Compartilhado.Infra.Orm.Config;
+namespace EscolaDeCursos.Infra.Compartilhado.Orm.Config;
 
 public sealed class InstrutorConfiguration : IEntityTypeConfiguration<Instrutor>
 {
