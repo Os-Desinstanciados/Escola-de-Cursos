@@ -20,4 +20,5 @@
   <ItemGroup>
     <ProjectReference Include="..\EscolaDeCursos.Dominio\EscolaDeCursos.Dominio.csproj" />
   </ItemGroup>
+
 </Project>
