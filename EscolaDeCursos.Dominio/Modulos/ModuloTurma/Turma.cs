@@ -12,7 +12,7 @@ public class Turma : EntidadeBase<Turma>
     public int NumeroMaximoAlunos { get; set; }
     //public Curso Curso { get; set }
     public Instrutor Instrutor { get; set; } = null!;
-    public List<Aluno> Alunos { get; set; } = [];
+    
 
     public Turma()
     {        
@@ -23,8 +23,8 @@ public class Turma : EntidadeBase<Turma>
         DateTime dataInicio,
         DateTime dataTermino,
         int numeroMaximoAlunos,
-        Instrutor instrutor,
-        List<Aluno> alunos
+        Instrutor instrutor
+        
     ) : this()
     {
         Nome = nome;
@@ -32,7 +32,6 @@ public class Turma : EntidadeBase<Turma>
         DataTermino = dataTermino;
         NumeroMaximoAlunos = numeroMaximoAlunos;
         Instrutor = instrutor;
-        Alunos = alunos;
     }
     public override List<string> Validar()
     {
@@ -65,8 +64,7 @@ public class Turma : EntidadeBase<Turma>
         DataInicio = entidadeAtualizada.DataInicio;
         DataTermino = entidadeAtualizada.DataTermino;
         NumeroMaximoAlunos = entidadeAtualizada.NumeroMaximoAlunos;
-        Instrutor = entidadeAtualizada.Instrutor;
-        Alunos = entidadeAtualizada.Alunos;        
+        Instrutor = entidadeAtualizada.Instrutor;                
     }
 
 }
