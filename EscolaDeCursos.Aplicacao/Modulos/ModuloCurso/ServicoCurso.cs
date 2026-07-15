@@ -19,7 +19,31 @@ public class ServicoCurso : ServicoBase<Curso>
         this.repositorioCategoria = repositorioCategoria;
     }
 
+    public Result Cadastrar(CadastrarCursoDto dto)
+    {
+        if (ExisteCursoComMesmoNome(dto.Nome))
+            return Falha(nameof(dto.Nome), "Já existe um curso com este nome.");
 
+        if (!ExisteCategoria(dto.CategoriaId))
+            return Falha(nameof(dto.CategoriaId), "A categoria selecionada não existe.");
+
+        Curso novoCurso = new Curso
+        {
+            Nome = dto.Nome,
+            CategoriaId = dto.CategoriaId,
+            Nivel = dto.Nivel,
+            CargaHoraria = dto.CargaHoraria
+        };
+
+        Result resultadoValidacao = ValidarEntidade(novoCurso);
+
+        if (resultadoValidacao.IsFailed)
+            return resultadoValidacao;
+
+        repositorioCurso.Cadastrar(novoCurso);
+
+        return Result.Ok();
+    }
 
     public List<ListarCursosDto> SelecionarTodos()
     {

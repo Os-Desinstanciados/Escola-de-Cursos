@@ -15,7 +15,9 @@ public class RepositorioCursoEmOrm : IRepositorioCurso
 
     public void Cadastrar(Curso entidade)
     {
-        throw new NotImplementedException();
+        dbContext.Cursos.Add(entidade);
+
+        dbContext.SaveChanges();
     }
 
     public bool Editar(Guid idSelecionado, Curso entidadeAtualizada)
