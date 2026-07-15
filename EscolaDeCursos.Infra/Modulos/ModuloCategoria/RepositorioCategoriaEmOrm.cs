@@ -3,11 +3,11 @@ using EscolaDeCursos.Infra.Compartilhado.Orm;
 
 namespace EscolaDeCursos.Infra.Modulos.ModuloCategoria;
 
-public class RepositorioCategoria : IRepositorioCategoria
+public class RepositorioCategoriaEmOrm : IRepositorioCategoria
 {
     private readonly EscolaDeCursosDbContext dbContext;
 
-    public RepositorioCategoria(EscolaDeCursosDbContext dbContext)
+    public RepositorioCategoriaEmOrm(EscolaDeCursosDbContext dbContext)
     {
         this.dbContext = dbContext;
     }
