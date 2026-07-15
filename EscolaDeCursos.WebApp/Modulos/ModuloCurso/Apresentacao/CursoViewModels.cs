@@ -40,3 +40,11 @@ public record EditarCursoViewModel(
     [Range(1, int.MaxValue, ErrorMessage = "A carga horária deve ser maior que zero.")]
     int CargaHoraria
 );
+
+public record ExcluirCursoViewModel(
+    Guid Id,
+    string Nome,
+    string Categoria,
+    NivelCurso Nivel,
+    int CargaHoraria
+);

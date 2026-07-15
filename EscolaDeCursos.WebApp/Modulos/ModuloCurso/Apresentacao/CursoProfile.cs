@@ -11,5 +11,7 @@ public class CursoProfile : Profile
         CreateMap<ListarCursosDto, ListarCursoViewModel>();
         CreateMap<CadastrarCursoViewModel, CadastrarCursoDto>();
         CreateMap<DetalhesCursoDto, EditarCursoViewModel>();
+        CreateMap<EditarCursoViewModel, EditarCursoDto>();
+        CreateMap<DetalhesCursoDto, ExcluirCursoViewModel>();
     }
 }

@@ -36,7 +36,16 @@ public class RepositorioCursoEmOrm : IRepositorioCurso
 
     public bool Excluir(Guid idSelecionado)
     {
-        throw new NotImplementedException();
+        Curso? cursoSelecionado = SelecionarPorId(idSelecionado);
+
+        if (cursoSelecionado is null)
+            return false;
+
+        dbContext.Cursos.Remove(cursoSelecionado);
+
+        dbContext.SaveChanges();
+
+        return true;
     }
 
     public List<Curso> Filtrar(Func<Curso, bool> filtro)

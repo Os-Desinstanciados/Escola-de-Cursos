@@ -72,6 +72,17 @@ public class ServicoCurso : ServicoBase<Curso>
 
         return Result.Ok();
     }
+    public Result Excluir(Guid id)
+    {
+        Curso? curso = repositorioCurso.SelecionarPorId(id);
+
+        if (curso is null)
+            return Falha(string.Empty, "Curso não encontrado.");
+
+        repositorioCurso.Excluir(id);
+
+        return Result.Ok();
+    }
 
     public List<ListarCursosDto> SelecionarTodos()
     {

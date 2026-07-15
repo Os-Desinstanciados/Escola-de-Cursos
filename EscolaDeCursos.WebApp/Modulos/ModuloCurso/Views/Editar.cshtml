@@ -5,8 +5,6 @@
     ViewBag.Titulo = "Edição de Curso";
 }
 
-<h5>Edição de Curso</h5>
-
 <hr />
 
 <form asp-action="Editar" method="post">
@@ -71,14 +69,14 @@
     </div>
 
     <div class="d-flex gap-2">
-        <button type="submit"
-                class="btn btn-primary rounded-pill px-4">
-            Gravar
-        </button>
-
         <a asp-action="Listar"
            class="btn btn-outline-primary rounded-pill px-4">
             Voltar
         </a>
+
+        <button type="submit"
+                class="btn btn-primary rounded-pill px-4">
+            Editar
+        </button>
     </div>
 </form>

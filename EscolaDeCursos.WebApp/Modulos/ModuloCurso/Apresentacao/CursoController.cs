@@ -25,7 +25,7 @@ public class CursoController(
 
         return View(listarVms);
     }
-    
+
     [HttpGet]
     public ActionResult Cadastrar()
     {
@@ -116,6 +116,37 @@ public class CursoController(
 
         return RedirectToAction(nameof(Listar));
     }
+
+    [HttpGet]
+    public ActionResult Excluir(Guid id)
+    {
+        Result<DetalhesCursoDto> resultado =
+            servicoCurso.SelecionarPorId(id);
+
+        if (resultado.IsFailed)
+        {
+            TempData.AddErrorMessage(resultado);
+
+            return RedirectToAction(nameof(Listar));
+        }
+
+        ExcluirCursoViewModel excluirVm =
+            mapeador.Map<ExcluirCursoViewModel>(resultado.Value);
+
+        return View(excluirVm);
+    }
+
+    [HttpPost]
+    public ActionResult Excluir(ExcluirCursoViewModel excluirVm)
+    {
+        Result resultado = servicoCurso.Excluir(excluirVm.Id);
+
+        if (resultado.IsFailed)
+            TempData.AddErrorMessage(resultado);
+
+        return RedirectToAction(nameof(Listar));
+    }
+
     private void CarregarCategorias()
     {
         List<ListarCategoriasDto> categorias = servicoCategoria.SelecionarTodos();
