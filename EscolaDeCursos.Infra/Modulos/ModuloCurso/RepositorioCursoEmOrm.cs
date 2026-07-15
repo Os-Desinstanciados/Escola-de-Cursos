@@ -1,5 +1,6 @@
 using EscolaDeCursos.Dominio.Modulos.ModuloCurso;
 using EscolaDeCursos.Infra.Compartilhado.Orm;
+using Microsoft.EntityFrameworkCore;
 
 namespace EscolaDeCursos.Infra.Modulos.ModuloCurso;
 
@@ -29,16 +30,23 @@ public class RepositorioCursoEmOrm : IRepositorioCurso
 
     public List<Curso> Filtrar(Func<Curso, bool> filtro)
     {
-        throw new NotImplementedException();
+        return dbContext.Cursos
+            .Include(c => c.Categoria)
+            .Where(filtro)
+            .ToList();
     }
 
     public Curso? SelecionarPorId(Guid idSelecionado)
     {
-        throw new NotImplementedException();
+        return dbContext.Cursos
+            .Include(c => c.Categoria)
+            .FirstOrDefault(c => c.Id == idSelecionado);
     }
 
     public List<Curso> SelecionarTodos()
     {
-        throw new NotImplementedException();
+        return dbContext.Cursos
+            .Include(c => c.Categoria)
+            .ToList();
     }
 }
