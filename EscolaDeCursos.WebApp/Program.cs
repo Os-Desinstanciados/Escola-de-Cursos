@@ -6,6 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configuração do container de injeção de dependência
 
+Console.WriteLine(builder.Configuration.GetConnectionString("SqlServerEF"));
+
 builder.Services.AddInfraRepositories(builder.Configuration, builder.Logging);
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddPresentationConfig(builder.Configuration);

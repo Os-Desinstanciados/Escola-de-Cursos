@@ -4,69 +4,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EscolaDeCursos.Infra.Modulos.ModuloCurso;
 
-public class RepositorioCursoEmOrm : IRepositorioCurso
+public sealed class RepositorioCursoEmOrm(
+    EscolaDeCursosDbContext dbContext
+) : RepositorioBaseEmOrm<Curso>(dbContext), IRepositorioCurso
 {
-    private readonly EscolaDeCursosDbContext dbContext;
-
-    public RepositorioCursoEmOrm(EscolaDeCursosDbContext dbContext)
+    public override List<Curso> SelecionarTodos()
     {
-        this.dbContext = dbContext;
-    }
-
-    public void Cadastrar(Curso entidade)
-    {
-        dbContext.Cursos.Add(entidade);
-
-        dbContext.SaveChanges();
-    }
-
-    public bool Editar(Guid idSelecionado, Curso entidadeAtualizada)
-    {
-        Curso? cursoSelecionado = SelecionarPorId(idSelecionado);
-
-        if (cursoSelecionado is null)
-            return false;
-
-        cursoSelecionado.Atualizar(entidadeAtualizada);
-
-        dbContext.SaveChanges();
-
-        return true;
-    }
-
-    public bool Excluir(Guid idSelecionado)
-    {
-        Curso? cursoSelecionado = SelecionarPorId(idSelecionado);
-
-        if (cursoSelecionado is null)
-            return false;
-
-        dbContext.Cursos.Remove(cursoSelecionado);
-
-        dbContext.SaveChanges();
-
-        return true;
-    }
-
-    public List<Curso> Filtrar(Func<Curso, bool> filtro)
-    {
-        return dbContext.Cursos
+        return registros
             .Include(c => c.Categoria)
-            .Where(filtro)
+            .OrderBy(c => c.Nome)
             .ToList();
     }
 
-    public Curso? SelecionarPorId(Guid idSelecionado)
+    public override Curso? SelecionarPorId(Guid idSelecionado)
     {
-        return dbContext.Cursos
+        return registros
             .Include(c => c.Categoria)
             .FirstOrDefault(c => c.Id == idSelecionado);
     }
 
-    public List<Curso> SelecionarTodos()
+    public override List<Curso> Filtrar(Func<Curso, bool> filtro)
     {
-        return dbContext.Cursos
+        return registros
             .Include(c => c.Categoria)
+            .Where(filtro)
+            .OrderBy(c => c.Nome)
             .ToList();
     }
 }

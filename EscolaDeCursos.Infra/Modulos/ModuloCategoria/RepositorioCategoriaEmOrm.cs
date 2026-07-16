@@ -3,62 +3,22 @@ using EscolaDeCursos.Infra.Compartilhado.Orm;
 
 namespace EscolaDeCursos.Infra.Modulos.ModuloCategoria;
 
-public class RepositorioCategoriaEmOrm : IRepositorioCategoria
+public sealed class RepositorioCategoriaEmOrm(
+    EscolaDeCursosDbContext dbContext
+) : RepositorioBaseEmOrm<Categoria>(dbContext), IRepositorioCategoria
 {
-    private readonly EscolaDeCursosDbContext dbContext;
-
-    public RepositorioCategoriaEmOrm(EscolaDeCursosDbContext dbContext)
+    public override List<Categoria> SelecionarTodos()
     {
-        this.dbContext = dbContext;
+        return registros
+            .OrderBy(c => c.Nome)
+            .ToList();
     }
 
-    public void Cadastrar(Categoria entidade)
+    public override List<Categoria> Filtrar(Func<Categoria, bool> filtro)
     {
-        dbContext.Categorias.Add(entidade);
-
-        dbContext.SaveChanges();
-    }
-
-    public bool Editar(Guid idSelecionado, Categoria entidadeAtualizada)
-    {
-        Categoria? categoriaSelecionada = SelecionarPorId(idSelecionado);
-
-        if (categoriaSelecionada is null)
-            return false;
-
-        categoriaSelecionada.Atualizar(entidadeAtualizada);
-
-        dbContext.SaveChanges();
-
-        return true;
-    }
-
-    public bool Excluir(Guid idSelecionado)
-    {
-        Categoria? categoriaSelecionada = SelecionarPorId(idSelecionado);
-
-        if (categoriaSelecionada is null)
-            return false;
-
-        dbContext.Categorias.Remove(categoriaSelecionada);
-
-        dbContext.SaveChanges();
-
-        return true;
-    }
-
-    public List<Categoria> Filtrar(Func<Categoria, bool> filtro)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Categoria? SelecionarPorId(Guid idSelecionado)
-    {
-        return dbContext.Categorias.Find(idSelecionado);
-    }
-
-    public List<Categoria> SelecionarTodos()
-    {
-        return dbContext.Categorias.ToList();
+        return registros
+            .Where(filtro)
+            .OrderBy(c => c.Nome)
+            .ToList();
     }
 }

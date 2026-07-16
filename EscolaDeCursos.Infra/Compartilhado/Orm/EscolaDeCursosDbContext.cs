@@ -20,5 +20,7 @@ public sealed class EscolaDeCursosDbContext(
     {
         modelBuilder.ApplyConfiguration(new CategoriaConfiguration());
         modelBuilder.ApplyConfiguration(new CursoConfiguration());
+        modelBuilder.ApplyConfiguration(new AlunoConfiguration());
+        modelBuilder.ApplyConfiguration(new InstrutorConfiguration());
     }
 }

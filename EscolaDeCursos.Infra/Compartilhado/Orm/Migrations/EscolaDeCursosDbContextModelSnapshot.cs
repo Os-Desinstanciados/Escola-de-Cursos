@@ -61,45 +61,6 @@ namespace EscolaDeCursos.Infra.Compartilhado.Orm.Migrations
                     b.ToTable("TBAluno", (string)null);
                 });
 
-            modelBuilder.Entity("EscolaDeCursos.Dominio.Modulos.ModuloInstrutor.Instrutor", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Endereco")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Telefone")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("Id")
-                        .HasName("PK_TBInstrutor");
-
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasDatabaseName("UQ_TBInstrutor_Email");
-
-                    b.HasIndex("Telefone")
-                        .IsUnique()
-                        .HasDatabaseName("UQ_TBInstrutor_Telefone");
-
-                    b.ToTable("TBInstrutor", (string)null);
-                });
-
             modelBuilder.Entity("EscolaDeCursos.Dominio.Modulos.ModuloCategoria.Categoria", b =>
                 {
                     b.Property<Guid>("Id")
@@ -141,6 +102,45 @@ namespace EscolaDeCursos.Infra.Compartilhado.Orm.Migrations
                     b.HasIndex("CategoriaId");
 
                     b.ToTable("TBCurso", (string)null);
+                });
+
+            modelBuilder.Entity("EscolaDeCursos.Dominio.Modulos.ModuloInstrutor.Instrutor", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Endereco")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Telefone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id")
+                        .HasName("PK_TBInstrutor");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasDatabaseName("UQ_TBInstrutor_Email");
+
+                    b.HasIndex("Telefone")
+                        .IsUnique()
+                        .HasDatabaseName("UQ_TBInstrutor_Telefone");
+
+                    b.ToTable("TBInstrutor", (string)null);
                 });
 
             modelBuilder.Entity("EscolaDeCursos.Dominio.Modulos.ModuloCurso.Curso", b =>

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EscolaDeCursos.Infra.Compartilhado.Orm.Migrations
 {
     [DbContext(typeof(EscolaDeCursosDbContext))]
-    [Migration("20260714192109_Add_TBAluno_TBInstrutor")]
-    partial class Add_TBAluno_TBInstrutor
+    [Migration("20260716015513_Add_TBCategoriaECurso")]
+    partial class Add_TBCategoriaECurso
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,6 +64,49 @@ namespace EscolaDeCursos.Infra.Compartilhado.Orm.Migrations
                     b.ToTable("TBAluno", (string)null);
                 });
 
+            modelBuilder.Entity("EscolaDeCursos.Dominio.Modulos.ModuloCategoria.Categoria", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(35)
+                        .HasColumnType("nvarchar(35)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TBCategoria", (string)null);
+                });
+
+            modelBuilder.Entity("EscolaDeCursos.Dominio.Modulos.ModuloCurso.Curso", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CargaHoraria")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("CategoriaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Nivel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoriaId");
+
+                    b.ToTable("TBCurso", (string)null);
+                });
+
             modelBuilder.Entity("EscolaDeCursos.Dominio.Modulos.ModuloInstrutor.Instrutor", b =>
                 {
                     b.Property<Guid>("Id")
@@ -101,6 +144,17 @@ namespace EscolaDeCursos.Infra.Compartilhado.Orm.Migrations
                         .HasDatabaseName("UQ_TBInstrutor_Telefone");
 
                     b.ToTable("TBInstrutor", (string)null);
+                });
+
+            modelBuilder.Entity("EscolaDeCursos.Dominio.Modulos.ModuloCurso.Curso", b =>
+                {
+                    b.HasOne("EscolaDeCursos.Dominio.Modulos.ModuloCategoria.Categoria", "Categoria")
+                        .WithMany()
+                        .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Categoria");
                 });
 #pragma warning restore 612, 618
         }

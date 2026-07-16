@@ -15,6 +15,7 @@ public class EscolaDeCursosDbContextFactory : IDesignTimeDbContextFactory<Escola
         var configuration = new ConfigurationBuilder()
             .SetBasePath(basePath)
             .AddJsonFile("appsettings.json", optional: true)
+            .AddJsonFile("appsettings.Development.json", optional: true)
             .AddEnvironmentVariables()
             .Build();
 
