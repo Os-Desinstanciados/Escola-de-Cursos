@@ -2,7 +2,7 @@ using EscolaDeCursos.Dominio.Modulos.ModuloCurso;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EscolaDeCursos.Infra.Compartilhado.Orm.Config;
+namespace EscolaDeCursos.Infra.Modulos.ModuloCurso;
 
 public class CursoConfiguration : IEntityTypeConfiguration<Curso>
 {

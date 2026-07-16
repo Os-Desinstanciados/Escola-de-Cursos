@@ -1,4 +1,7 @@
-using EscolaDeCursos.Infra.Compartilhado.Orm.Config;
+using EscolaDeCursos.Infra.Modulos.ModuloCategoria;
+using EscolaDeCursos.Infra.Modulos.ModuloAluno;
+using EscolaDeCursos.Infra.Modulos.ModuloInstrutor;
+using EscolaDeCursos.Infra.Modulos.ModuloCurso;
 using EscolaDeCursos.Dominio.Modulos.ModuloCategoria;
 using EscolaDeCursos.Dominio.Modulos.ModuloCurso;
 using EscolaDeCursos.Dominio.Modulos.ModuloAluno;

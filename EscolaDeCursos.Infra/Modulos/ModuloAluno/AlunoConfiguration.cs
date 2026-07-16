@@ -1,17 +1,17 @@
-using EscolaDeCursos.Dominio.Modulos.ModuloInstrutor;
+using EscolaDeCursos.Dominio.Modulos.ModuloAluno;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EscolaDeCursos.Infra.Compartilhado.Orm.Config;
+namespace EscolaDeCursos.Infra.Modulos.ModuloAluno;
 
-public sealed class InstrutorConfiguration : IEntityTypeConfiguration<Instrutor>
+public sealed class AlunoConfiguration : IEntityTypeConfiguration<Aluno>
 {
-    public void Configure(EntityTypeBuilder<Instrutor> builder)
+    public void Configure(EntityTypeBuilder<Aluno> builder)
     {
-        builder.ToTable("TBInstrutor");
+        builder.ToTable("TBAluno");
 
         builder.HasKey(a => a.Id)
-            .HasName("PK_TBInstrutor");
+            .HasName("PK_TBAluno");
 
         builder.Property(a => a.Id)
             .ValueGeneratedNever();
@@ -35,11 +35,11 @@ public sealed class InstrutorConfiguration : IEntityTypeConfiguration<Instrutor>
         // Índice de exclusividade
         builder.HasIndex(a => a.Telefone)
             .IsUnique()
-            .HasDatabaseName("UQ_TBInstrutor_Telefone");
+            .HasDatabaseName("UQ_TBAluno_Telefone");
             
         builder.HasIndex(a => a.Email)
             .IsUnique()
-            .HasDatabaseName("UQ_TBInstrutor_Email");
+            .HasDatabaseName("UQ_TBAluno_Email");
 
     }
 }
