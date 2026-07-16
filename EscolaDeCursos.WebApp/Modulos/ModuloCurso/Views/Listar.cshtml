@@ -1,0 +1,75 @@
+@model List<ListarCursoViewModel>
+
+@{
+    Layout = "_Layout";
+    ViewBag.Titulo = "Visualização de Cursos";
+}
+
+<div class="d-flex justify-content-between align-items-end mb-3">
+    <div>
+        <h5>Visualização de Cursos</h5>
+
+        <a class="btn btn-outline-primary rounded-pill px-4"
+           asp-controller="Curso"
+           asp-action="Cadastrar">
+            + Cadastrar novo/a
+        </a>
+    </div>
+
+    <span>
+        Cursos Cadastrados: @Model.Count
+    </span>
+</div>
+
+<hr />
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-primary border-start border-primary border-4 rounded-3"
+         role="alert">
+        Nenhum curso cadastrado.
+    </div>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var curso in Model)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 rounded-4">
+                    <div class="card-body">
+                        <p class="mb-1">
+                            <strong>Nome:</strong> @curso.Nome
+                        </p>
+
+                        <p class="mb-1">
+                            <strong>Categoria:</strong> @curso.Categoria
+                        </p>
+
+                        <p class="mb-1">
+                            <strong>Nível:</strong> @curso.Nivel
+                        </p>
+
+                        <p class="mb-3">
+                            <strong>Carga Horária:</strong> @curso.CargaHoraria h
+                        </p>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a class="btn btn-outline-primary btn-sm rounded-pill"
+                               asp-action="Editar"
+                               asp-route-id="@curso.Id">
+                                Editar
+                            </a>
+
+                            <a class="btn btn-outline-primary btn-sm rounded-pill"
+                               asp-action="Excluir"
+                               asp-route-id="@curso.Id">
+                                Excluir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
