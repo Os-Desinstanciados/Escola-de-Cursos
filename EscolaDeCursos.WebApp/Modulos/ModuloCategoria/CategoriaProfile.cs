@@ -1,8 +1,7 @@
 using AutoMapper;
 using EscolaDeCursos.Aplicacao.Modulos.ModuloCategoria;
-using EscolaDeCursos.WebApp.Modulos.ModuloCategoria.Apresentacao.ViewModels;
 
-namespace EscolaDeCursos.WebApp.Modulos.ModuloCategoria.Apresentacao;
+namespace EscolaDeCursos.WebApp.Modulos.ModuloCategoria;
 
 public class CategoriaProfile : Profile
 {

@@ -1,8 +1,7 @@
 using AutoMapper;
 using EscolaDeCursos.Aplicacao.Modulos.ModuloCurso;
-using EscolaDeCursos.WebApp.Modulos.ModuloCurso.Apresentacao.ViewModels;
 
-namespace EscolaDeCursos.WebApp.Modulos.ModuloCurso.Apresentacao;
+namespace EscolaDeCursos.WebApp.Modulos.ModuloCurso;
 
 public class CursoProfile : Profile
 {

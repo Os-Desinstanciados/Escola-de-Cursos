@@ -3,7 +3,6 @@ using FluentResults;
 using EscolaDeCursos.WebApp.Compartilhado.Extensions;
 using EscolaDeCursos.Aplicacao.Modulos.ModuloCategoria;
 using Microsoft.AspNetCore.Mvc;
-using EscolaDeCursos.WebApp.Modulos.ModuloCategoria.Apresentacao.ViewModels;
 
 namespace EscolaDeCursos.WebApp.Modulos.ModuloCategoria.Apresentacao;
 

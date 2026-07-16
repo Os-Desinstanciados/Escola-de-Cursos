@@ -1,7 +1,7 @@
 using EscolaDeCursos.Dominio.Modulos.ModuloCurso;
 using System.ComponentModel.DataAnnotations;
 
-namespace EscolaDeCursos.WebApp.Modulos.ModuloCurso.Apresentacao.ViewModels;
+namespace EscolaDeCursos.WebApp.Modulos.ModuloCurso;
 
 public record ListarCursoViewModel(
     Guid Id,

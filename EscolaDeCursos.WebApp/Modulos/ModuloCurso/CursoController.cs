@@ -3,12 +3,11 @@ using EscolaDeCursos.Aplicacao.Modulos.ModuloCategoria;
 using EscolaDeCursos.Aplicacao.Modulos.ModuloCurso;
 using EscolaDeCursos.Dominio.Modulos.ModuloCurso;
 using EscolaDeCursos.WebApp.Compartilhado.Extensions;
-using EscolaDeCursos.WebApp.Modulos.ModuloCurso.Apresentacao.ViewModels;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace EscolaDeCursos.WebApp.Modulos.ModuloCurso.Apresentacao;
+namespace EscolaDeCursos.WebApp.Modulos.ModuloCurso;
 
 public class CursoController(
     ServicoCurso servicoCurso,

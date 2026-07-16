@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace EscolaDeCursos.WebApp.Modulos.ModuloCategoria.Apresentacao.ViewModels;
+namespace EscolaDeCursos.WebApp.Modulos.ModuloCategoria;
 
 public record ListarCategoriaViewModel(
     Guid Id,
