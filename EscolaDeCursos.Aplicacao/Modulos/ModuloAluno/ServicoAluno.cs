@@ -1,7 +1,6 @@
 using FluentResults;
 using EscolaDeCursos.Aplicacao.Compartilhado;
 using EscolaDeCursos.Dominio.Modulos.ModuloAluno;
-using EscolaDeCursos.Aplicacao.Modulos.ModuloAluno;
 
 namespace EscolaDeCursos.Aplicacao.Modulos.ModuloAluno;
 
