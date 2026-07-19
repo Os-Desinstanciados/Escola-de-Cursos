@@ -18,5 +18,6 @@ public static class InjecaoDependencia
         services.AddScoped<ServicoInstrutor>();        
         services.AddScoped<ServicoCategoria>();
         services.AddScoped<ServicoCurso>();
+        services.AddScoped<ServicoAula>();
     }
 }

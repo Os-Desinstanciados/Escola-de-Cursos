@@ -5,31 +5,31 @@ namespace EscolaDeCursos.Aplicacao.Modulos.ModuloCurso;
 public record ListarCursosDto(
     Guid Id,
     string Nome,
-    string Categoria,
     NivelCurso Nivel,
-    int CargaHoraria
+    int CargaHoraria,
+    string Categoria
 );
 
 public record CadastrarCursoDto(
     string Nome,
-    Guid CategoriaId,
     NivelCurso Nivel,
-    int CargaHoraria
+    int CargaHoraria,
+    Guid CategoriaId
 );
 
 public record EditarCursoDto(
     Guid Id,
     string Nome,
-    Guid CategoriaId,
     NivelCurso Nivel,
-    int CargaHoraria
+    int CargaHoraria,
+    Guid CategoriaId
 );
 
 public record DetalhesCursoDto(
     Guid Id,
     string Nome,
-    Guid CategoriaId,
-    string Categoria,
     NivelCurso Nivel,
-    int CargaHoraria
+    int CargaHoraria,
+    Guid CategoriaId,
+    string NomeCategoria
 );

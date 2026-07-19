@@ -18,6 +18,7 @@ public sealed class EscolaDeCursosDbContext(
     public DbSet<Instrutor> Instrutores => Set<Instrutor>();
     public DbSet<Categoria> Categorias => Set<Categoria>();
     public DbSet<Curso> Cursos => Set<Curso>();
+    public DbSet<Aula> Aulas => Set<Aula>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,5 +26,6 @@ public sealed class EscolaDeCursosDbContext(
         modelBuilder.ApplyConfiguration(new CursoConfiguration());
         modelBuilder.ApplyConfiguration(new AlunoConfiguration());
         modelBuilder.ApplyConfiguration(new InstrutorConfiguration());
+        modelBuilder.ApplyConfiguration(new AulaConfiguration());
     }
 }

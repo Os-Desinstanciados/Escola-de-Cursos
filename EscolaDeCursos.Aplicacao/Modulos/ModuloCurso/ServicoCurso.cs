@@ -24,16 +24,17 @@ public class ServicoCurso : ServicoBase<Curso>
         if (ExisteCursoComMesmoNome(dto.Nome))
             return Falha(nameof(dto.Nome), "Já existe um curso com este nome.");
 
-        if (!ExisteCategoria(dto.CategoriaId))
-            return Falha(nameof(dto.CategoriaId), "A categoria selecionada não existe.");
+        Result<Categoria> resultadoCategoria = SelecionarCategoria(dto.CategoriaId);
 
-        Curso novoCurso = new Curso
-        {
-            Nome = dto.Nome,
-            CategoriaId = dto.CategoriaId,
-            Nivel = dto.Nivel,
-            CargaHoraria = dto.CargaHoraria
-        };
+        if (resultadoCategoria.IsFailed)
+            return resultadoCategoria.ToResult();
+
+        Curso novoCurso = new Curso(
+            dto.Nome,
+            dto.Nivel,
+            dto.CargaHoraria,
+            resultadoCategoria.Value
+        );
 
         Result resultadoValidacao = ValidarEntidade(novoCurso);
 
@@ -44,21 +45,23 @@ public class ServicoCurso : ServicoBase<Curso>
 
         return Result.Ok();
     }
+
     public Result Editar(EditarCursoDto dto)
     {
         if (ExisteCursoComMesmoNome(dto.Nome, dto.Id))
             return Falha(nameof(dto.Nome), "Já existe um curso com este nome.");
 
-        if (!ExisteCategoria(dto.CategoriaId))
-            return Falha(nameof(dto.CategoriaId), "A categoria selecionada não existe.");
+        Result<Categoria> resultadoCategoria = SelecionarCategoria(dto.CategoriaId);
 
-        Curso cursoAtualizado = new Curso
-        {
-            Nome = dto.Nome,
-            CategoriaId = dto.CategoriaId,
-            Nivel = dto.Nivel,
-            CargaHoraria = dto.CargaHoraria
-        };
+        if (resultadoCategoria.IsFailed)
+            return resultadoCategoria.ToResult();
+
+        Curso cursoAtualizado = new Curso(
+            dto.Nome,
+            dto.Nivel,
+            dto.CargaHoraria,
+            resultadoCategoria.Value
+        );
 
         Result resultadoValidacao = ValidarEntidade(cursoAtualizado);
 
@@ -72,6 +75,7 @@ public class ServicoCurso : ServicoBase<Curso>
 
         return Result.Ok();
     }
+
     public Result Excluir(Guid id)
     {
         Curso? curso = repositorioCurso.SelecionarPorId(id);
@@ -79,6 +83,10 @@ public class ServicoCurso : ServicoBase<Curso>
         if (curso is null)
             return Falha(string.Empty, "Curso não encontrado.");
 
+        if (curso.Aulas.Count > 0)
+            return Falha(string.Empty, "Não é possível excluir este curso, pois ele possui aulas vinculadas.");
+
+        
         repositorioCurso.Excluir(id);
 
         return Result.Ok();
@@ -91,9 +99,9 @@ public class ServicoCurso : ServicoBase<Curso>
             .Select(c => new ListarCursosDto(
                 c.Id,
                 c.Nome,
-                c.Categoria?.Nome ?? string.Empty,
                 c.Nivel,
-                c.CargaHoraria
+                c.CargaHoraria,
+                c.Categoria.Nome
             ))
             .ToList();
     }
@@ -108,10 +116,10 @@ public class ServicoCurso : ServicoBase<Curso>
         return Result.Ok(new DetalhesCursoDto(
             curso.Id,
             curso.Nome,
-            curso.CategoriaId,
-            curso.Categoria?.Nome ?? string.Empty,
             curso.Nivel,
-            curso.CargaHoraria
+            curso.CargaHoraria,
+            curso.Categoria.Id,
+            curso.Categoria.Nome
         ));
     }
 
@@ -127,8 +135,26 @@ public class ServicoCurso : ServicoBase<Curso>
             );
     }
 
-    private bool ExisteCategoria(Guid categoriaId)
+    public List<OpcaoCategoriaCursoDto> SelecionarCategorias()
     {
-        return repositorioCategoria.SelecionarPorId(categoriaId) is not null;
+        return repositorioCategoria
+            .SelecionarTodos()
+            .Select(c => new OpcaoCategoriaCursoDto(c.Id, c.Nome))
+            .ToList();
     }
+
+    private Result<Categoria> SelecionarCategoria(Guid categoriaId)
+    {
+        Categoria? categoria = repositorioCategoria.SelecionarPorId(categoriaId);
+
+        if (categoria == null)
+            return Result.Fail<Categoria>(new Error("Selecione uma categoria válida.").WithMetadata("Campo", nameof(CadastrarCursoDto.CategoriaId)));
+
+        return Result.Ok(categoria);
+    }
+    private static string NormalizarNome(string nome)
+    {
+        return nome.Trim().ToLowerInvariant();
+    }
+
 }

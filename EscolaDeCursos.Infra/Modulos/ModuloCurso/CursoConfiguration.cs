@@ -10,21 +10,37 @@ public class CursoConfiguration : IEntityTypeConfiguration<Curso>
     {
         builder.ToTable("TBCurso");
 
-        builder.HasKey(c => c.Id);
+        builder.HasKey(c => c.Id)
+            .HasName("PK_TBCurso");
+
+        builder.Property(c => c.Id)
+            .ValueGeneratedNever();
 
         builder.Property(c => c.Nome)
             .IsRequired()
             .HasMaxLength(100);
 
         builder.Property(c => c.Nivel)
+            .HasConversion<int>()
             .IsRequired();
 
         builder.Property(c => c.CargaHoraria)
             .IsRequired();
 
+        builder.HasIndex(c => c.Nome)
+            .IsUnique()
+            .HasDatabaseName("UQ_TBCurso_Nome");
+
         builder.HasOne(c => c.Categoria)
             .WithMany()
-            .HasForeignKey(c => c.CategoriaId)
-            .IsRequired();
+            .HasForeignKey("CategoriaId")
+            .HasConstraintName("FK_TBCurso_TBCategoria")
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasMany(c => c.Aulas)
+            .WithOne(a => a.Curso)
+            .HasForeignKey("CursoId")
+            .HasConstraintName("FK_TBAula_TBCurso")
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -1,46 +1,36 @@
-@model ExcluirCursoViewModel
-
 @{
     Layout = "_Layout";
     ViewBag.Titulo = "Exclusão de Curso";
 }
 
-<hr />
+@model ExcluirCursoViewModel;
 
-<div class="alert alert-warning" role="alert">
-    Deseja realmente excluir este curso?
-</div>
+<form class="card border-primary-subtle shadow-sm mx-auto p-4" style="max-width: 620px;" asp-action="Excluir" asp-route-id="@Model.Id" method="post">
+    <input asp-for="Id" type="hidden">
 
-<div class="mb-3">
-    <p>
-        <strong>Nome:</strong> @Model.Nome
-    </p>
+    <div class="alert alert-primary border-start border-primary border-4 rounded-3" role="alert">
+        Deseja realmente excluir este curso?
+    </div>
 
-    <p>
-        <strong>Categoria:</strong> @Model.Categoria
-    </p>
+    <dl class="row mb-0">
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">ID</dt>
+        <dd class="col-sm-8 text-break">@Model.Id</dd>
 
-    <p>
-        <strong>Nível:</strong> @Model.Nivel
-    </p>
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Nome</dt>
+        <dd class="col-sm-8">@Model.Nome</dd>
 
-    <p>
-        <strong>Carga Horária:</strong> @Model.CargaHoraria h
-    </p>
-</div>
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Nível</dt>
+        <dd class="col-sm-8">@Model.Nivel</dd>
 
-<form asp-action="Excluir" method="post">
-    <input asp-for="Id" type="hidden" />
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Carga Horária</dt>
+        <dd class="col-sm-8">@Model.CargaHoraria h</dd>
 
-    <div class="d-flex gap-2">
-        <a asp-action="Listar"
-           class="btn btn-outline-primary rounded-pill px-4">
-            Voltar
-        </a>
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Categoria</dt>
+        <dd class="col-sm-8">@Model.NomeCategoria</dd>
+    </dl>
 
-        <button type="submit"
-                class="btn btn-danger rounded-pill px-4">
-            Confirmar
-        </button>
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <a class="btn btn-outline-primary rounded-pill px-4" asp-action="Listar">Voltar</a>
+        <button class="btn btn-primary rounded-pill px-4" type="submit">Confirmar</button>
     </div>
 </form>

@@ -20,15 +20,16 @@ public sealed class RepositorioCursoEmOrm(
     {
         return registros
             .Include(c => c.Categoria)
-            .FirstOrDefault(c => c.Id == idSelecionado);
+            .Include(c => c.Aulas)
+            .SingleOrDefault(c => c.Id == idSelecionado);
     }
 
     public override List<Curso> Filtrar(Func<Curso, bool> filtro)
     {
         return registros
             .Include(c => c.Categoria)
-            .Where(filtro)
             .OrderBy(c => c.Nome)
+            .Where(filtro)
             .ToList();
     }
 }

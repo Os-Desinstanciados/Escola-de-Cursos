@@ -7,10 +7,10 @@ public class CursoProfile : Profile
 {
     public CursoProfile()
     {
-        CreateMap<ListarCursosDto, ListarCursoViewModel>();
+        CreateMap<ListarCursosDto, ListarCursosViewModel>();
         CreateMap<CadastrarCursoViewModel, CadastrarCursoDto>();
-        CreateMap<DetalhesCursoDto, EditarCursoViewModel>();
         CreateMap<EditarCursoViewModel, EditarCursoDto>();
+        CreateMap<DetalhesCursoDto, EditarCursoViewModel>();
         CreateMap<DetalhesCursoDto, ExcluirCursoViewModel>();
     }
 }

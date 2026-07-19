@@ -1,5 +1,4 @@
 using AutoMapper;
-using EscolaDeCursos.Aplicacao.Modulos.ModuloCategoria;
 using EscolaDeCursos.Aplicacao.Modulos.ModuloCurso;
 using EscolaDeCursos.Dominio.Modulos.ModuloCurso;
 using EscolaDeCursos.WebApp.Compartilhado.Extensions;
@@ -11,7 +10,7 @@ namespace EscolaDeCursos.WebApp.Modulos.ModuloCurso;
 
 public class CursoController(
     ServicoCurso servicoCurso,
-    ServicoCategoria servicoCategoria,
+    ServicoAula servicoAula,
     IMapper mapeador
 ) : Controller
 {
@@ -20,7 +19,7 @@ public class CursoController(
     {
         List<ListarCursosDto> dtos = servicoCurso.SelecionarTodos();
 
-        List<ListarCursoViewModel> listarVms = mapeador.Map<List<ListarCursoViewModel>>(dtos);
+        List<ListarCursosViewModel> listarVms = mapeador.Map<List<ListarCursosViewModel>>(dtos);
 
         return View(listarVms);
     }
@@ -28,20 +27,14 @@ public class CursoController(
     [HttpGet]
     public ActionResult Cadastrar()
     {
-        List<ListarCategoriasDto> categorias = servicoCategoria.SelecionarTodos();
-
-        ViewBag.Categorias = new SelectList(
-            categorias,
-            nameof(ListarCategoriasDto.Id),
-            nameof(ListarCategoriasDto.Nome)
-        );
-
         CadastrarCursoViewModel cadastrarVm = new(
             string.Empty,
-            Guid.Empty,
-            NivelCurso.NaoDefinido,
-            0
+            NivelCurso.Facil,
+            null,
+            null
         );
+
+        CarregarCategorias();
 
         return View(cadastrarVm);
     }
@@ -50,7 +43,10 @@ public class CursoController(
     public ActionResult Cadastrar(CadastrarCursoViewModel cadastrarVm)
     {
         if (!ModelState.IsValid)
+        {
+            CarregarCategorias();
             return View(cadastrarVm);
+        }
 
         CadastrarCursoDto dto = mapeador.Map<CadastrarCursoDto>(cadastrarVm);
 
@@ -59,12 +55,13 @@ public class CursoController(
         if (resultado.IsFailed)
         {
             ModelState.AddModelError(resultado);
-
+            CarregarCategorias();
             return View(cadastrarVm);
         }
 
         return RedirectToAction(nameof(Listar));
     }
+
     [HttpGet]
     public ActionResult Editar(Guid id)
     {
@@ -77,15 +74,9 @@ public class CursoController(
             return RedirectToAction(nameof(Listar));
         }
 
-        List<ListarCategoriasDto> categorias = servicoCategoria.SelecionarTodos();
-
-        ViewBag.Categorias = new SelectList(
-            categorias,
-            nameof(ListarCategoriasDto.Id),
-            nameof(ListarCategoriasDto.Nome)
-        );
-
         EditarCursoViewModel editarVm = mapeador.Map<EditarCursoViewModel>(resultado.Value);
+
+        CarregarCategorias();
 
         return View(editarVm);
     }
@@ -96,7 +87,6 @@ public class CursoController(
         if (!ModelState.IsValid)
         {
             CarregarCategorias();
-
             return View(editarVm);
         }
 
@@ -107,9 +97,7 @@ public class CursoController(
         if (resultado.IsFailed)
         {
             ModelState.AddModelError(resultado);
-
             CarregarCategorias();
-
             return View(editarVm);
         }
 
@@ -119,18 +107,15 @@ public class CursoController(
     [HttpGet]
     public ActionResult Excluir(Guid id)
     {
-        Result<DetalhesCursoDto> resultado =
-            servicoCurso.SelecionarPorId(id);
+        Result<DetalhesCursoDto> resultado = servicoCurso.SelecionarPorId(id);
 
         if (resultado.IsFailed)
         {
             TempData.AddErrorMessage(resultado);
-
             return RedirectToAction(nameof(Listar));
         }
 
-        ExcluirCursoViewModel excluirVm =
-            mapeador.Map<ExcluirCursoViewModel>(resultado.Value);
+        ExcluirCursoViewModel excluirVm = mapeador.Map<ExcluirCursoViewModel>(resultado.Value);
 
         return View(excluirVm);
     }
@@ -146,14 +131,98 @@ public class CursoController(
         return RedirectToAction(nameof(Listar));
     }
 
+    [HttpGet]
+    public ActionResult GerenciarAulas(Guid id)
+    {
+        Result<DetalhesCursoDto> resultadoCurso = servicoCurso.SelecionarPorId(id);
+
+        if (resultadoCurso.IsFailed)
+        {
+            TempData.AddErrorMessage(resultadoCurso);
+            return RedirectToAction(nameof(Listar));
+        }
+
+        List<ListarAulaDto> aulas = servicoAula.SelecionarPorCursoId(id);
+        List<ListarAulaViewModel> aulasVm = mapeador.Map<List<ListarAulaViewModel>>(aulas);
+
+        DetalhesCursoDto curso = resultadoCurso.Value;
+
+        GerenciarAulasViewModel gerenciarVm = new GerenciarAulasViewModel(
+            curso.Id,
+            curso.Nome,
+            curso.Nivel.ToString(),
+            curso.CargaHoraria,
+            curso.NomeCategoria,
+            aulasVm
+        );
+
+        return View(gerenciarVm);
+    }
+
+    [HttpPost]
+    public ActionResult AdicionarAula(AdicionarAulaViewModel adicionarVm)
+    {
+        if (!ModelState.IsValid)
+        {
+            TempData["MensagemErro"] = "Verifique os campos da aula antes de adicionar.";
+            return RedirectToAction(nameof(GerenciarAulas), new { id = adicionarVm.CursoId });
+        }
+
+        AdicionarAulaDto dto = mapeador.Map<AdicionarAulaDto>(adicionarVm);
+
+        Result resultado = servicoAula.Adicionar(dto);
+
+        if (resultado.IsFailed)
+            TempData.AddErrorMessage(resultado);
+
+        return RedirectToAction(nameof(GerenciarAulas), new { id = adicionarVm.CursoId });
+    }
+
+    [HttpPost]
+    public ActionResult EditarAula(EditarAulaViewModel editarVm)
+    {
+        if (!ModelState.IsValid)
+        {
+            TempData["MensagemErro"] = "Verifique os campos da aula antes de salvar.";
+            return RedirectToAction(nameof(GerenciarAulas), new { id = editarVm.CursoId });
+        }
+
+        EditarAulaDto dto = mapeador.Map<EditarAulaDto>(editarVm);
+
+        Result resultado = servicoAula.Editar(dto);
+
+        if (resultado.IsFailed)
+            TempData.AddErrorMessage(resultado);
+
+        return RedirectToAction(nameof(GerenciarAulas), new { id = editarVm.CursoId });
+    }
+
+    [HttpPost]
+    public ActionResult RemoverAula(RemoverAulaViewModel removerVm)
+    {
+        Result resultado = servicoAula.Remover(removerVm.Id);
+
+        if (resultado.IsFailed)
+            TempData.AddErrorMessage(resultado);
+
+        return RedirectToAction(nameof(GerenciarAulas), new { id = removerVm.CursoId });
+    }
+
     private void CarregarCategorias()
     {
-        List<ListarCategoriasDto> categorias = servicoCategoria.SelecionarTodos();
+        List<OpcaoCategoriaCursoDto> categorias = servicoCurso.SelecionarCategorias();
 
-        ViewBag.Categorias = new SelectList(
-            categorias,
-            nameof(ListarCategoriasDto.Id),
-            nameof(ListarCategoriasDto.Nome)
-        );
+        ViewBag.Categorias = categorias
+            .Select(c => new SelectListItem(c.Nome, c.Id.ToString()))
+            .ToList();
     }
 }
+
+public record GerenciarAulasViewModel(
+    Guid CursoId,
+    string NomeCurso,
+    string Nivel,
+    int CargaHoraria,
+    string NomeCategoria,
+    List<ListarAulaViewModel> Aulas
+);
