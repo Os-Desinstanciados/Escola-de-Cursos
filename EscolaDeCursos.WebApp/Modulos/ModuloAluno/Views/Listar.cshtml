@@ -34,15 +34,15 @@ else
                         </div>
 
                         <dl class="row g-2 mb-4">
-                            <dt class="col-5 text-secondary fw-semibold">Endereço</dt>
-                            <dd class="col-7 mb-0 text-break">@a.Endereco</dd>
-
                             <dt class="col-5 text-secondary fw-semibold">Telefone</dt>
                             <dd class="col-7 mb-0 text-break">@a.Telefone</dd>
 
                             <dt class="col-5 text-secondary fw-semibold">E-mail</dt>
                             <dd class="col-7 mb-0 text-break">@a.Email</dd>
                             
+                            <dt class="col-5 text-secondary fw-semibold">Endereço</dt>
+                            <dd class="col-7 mb-0 text-break">@a.NumeroMatricula</dd>
+
                         <div class="d-flex flex-wrap gap-2 mt-auto justify-content-end">
                             <a class="btn btn-outline-primary btn-sm rounded-pill px-3" asp-action="Editar" asp-route-id="@a.Id">Editar</a>
                             <a class="btn btn-outline-primary btn-sm rounded-pill px-3" asp-action="Excluir" asp-route-id="@a.Id">Excluir</a>

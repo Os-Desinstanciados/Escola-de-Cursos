@@ -3,14 +3,13 @@ namespace EscolaDeCursos.Aplicacao.Modulos.ModuloAluno;
 public record ListarAlunosDto(
     Guid Id,
     string Nome,
-    string Endereco,
     string Telefone,
-    string Email
+    string Email,
+    string NumeroMatricula
 );
 
 public record CadastrarAlunoDto(
     string Nome,
-    string Endereco,
     string Telefone,
     string Email
 );
@@ -18,7 +17,6 @@ public record CadastrarAlunoDto(
 public record EditarAlunoDto(
     Guid Id,
     string Nome,
-    string Endereco,
     string Telefone,
     string Email
 );
@@ -26,7 +24,7 @@ public record EditarAlunoDto(
 public record DetalhesAlunoDto(
     Guid Id,
     string Nome,
-    string Endereco,
     string Telefone,
-    string Email
+    string Email,
+    string NumeroMatricula
 );

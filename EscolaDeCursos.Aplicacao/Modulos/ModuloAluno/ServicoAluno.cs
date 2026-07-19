@@ -25,9 +25,8 @@ public class ServicoAluno : ServicoBase<Aluno>
 
         Aluno novoAluno = new Aluno(
             dto.Nome,
-            dto.Endereco,
             dto.Telefone,
-            dto.Email            
+            dto.Email
         );
 
         Result resultadoValidacao = ValidarEntidade(novoAluno);
@@ -50,7 +49,6 @@ public class ServicoAluno : ServicoBase<Aluno>
 
         Aluno alunoAtualizado = new Aluno(
             dto.Nome,
-            dto.Endereco,
             dto.Telefone,
             dto.Email
         );
@@ -84,7 +82,7 @@ public class ServicoAluno : ServicoBase<Aluno>
     {
         return repositorioAluno
             .SelecionarTodos()
-            .Select(a => new ListarAlunosDto(a.Id, a.Nome, a.Endereco, a.Telefone, a.Email))
+            .Select(a => new ListarAlunosDto(a.Id, a.Nome, a.Telefone, a.Email, a.NumeroMatricula))
             .ToList();
     }
 
@@ -98,9 +96,9 @@ public class ServicoAluno : ServicoBase<Aluno>
         return Result.Ok(new DetalhesAlunoDto(
             aluno.Id,
             aluno.Nome,
-            aluno.Endereco,
             aluno.Telefone,
-            aluno.Email
+            aluno.Email,
+            aluno.NumeroMatricula
         ));
     }
 

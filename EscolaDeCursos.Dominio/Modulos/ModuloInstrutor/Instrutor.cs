@@ -6,9 +6,9 @@ namespace EscolaDeCursos.Dominio.Modulos.ModuloInstrutor;
 public class Instrutor : EntidadeBase<Instrutor>
 {
     public string Nome { get; set; } = string.Empty;
-    public string Endereco { get; set; } = string.Empty;    
     public string Telefone { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
+    public string Graduacao { get; set; } = string.Empty;
     
     public Instrutor()
     {
@@ -16,15 +16,15 @@ public class Instrutor : EntidadeBase<Instrutor>
 
     public Instrutor(
         string nome,
-        string endereco,
         string telefone,
-        string email
+        string email,
+        string graduacao
     ) : this()
     {
         Nome = nome;
-        Endereco = endereco;
         Telefone = telefone;
         Email = email;        
+        Graduacao = graduacao;        
     }
 
     public override List<string> Validar()
@@ -34,14 +34,14 @@ public class Instrutor : EntidadeBase<Instrutor>
         if (string.IsNullOrWhiteSpace(Nome) || Nome.Length < 2 || Nome.Length > 100)
             erros.Add("O campo \"Nome\" deve conter entre 2 e 100 caracteres.");        
 
-        if (string.IsNullOrWhiteSpace(Endereco) || Endereco.Length < 2 || Endereco.Length > 100)
-            erros.Add("O campo \"Endereço\" deve conter entre 2 e 100 caracteres.");        
-
         if (!Regex.IsMatch(Telefone, @"^\(\d{2}\) \d{4,5}-\d{4}$"))
             erros.Add("O campo \"Telefone\" deve estar no formato (XX) XXXX-XXXX ou (XX) XXXXX-XXXX.");
 
         if (!Regex.IsMatch(Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
             erros.Add("O campo \"E-mail\" deve conter um endereço de e-mail válido.");
+
+        if (string.IsNullOrWhiteSpace(Graduacao) || Graduacao.Length < 2 || Graduacao.Length > 100)
+            erros.Add("O campo \"Graduacao\" deve conter entre 2 e 100 caracteres.");        
         
 
         return erros;
@@ -50,8 +50,8 @@ public class Instrutor : EntidadeBase<Instrutor>
     public override void Atualizar(Instrutor entidadeAtualizada)
     {
         Nome = entidadeAtualizada.Nome;
-        Endereco = entidadeAtualizada.Endereco;
         Email = entidadeAtualizada.Email;
         Telefone = entidadeAtualizada.Telefone;        
+        Graduacao = entidadeAtualizada.Graduacao;
     }
 }

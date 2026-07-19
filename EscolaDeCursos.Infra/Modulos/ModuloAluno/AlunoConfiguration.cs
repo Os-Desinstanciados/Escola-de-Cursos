@@ -20,10 +20,6 @@ public sealed class AlunoConfiguration : IEntityTypeConfiguration<Aluno>
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.Property(a => a.Endereco)
-            .HasMaxLength(100)
-            .IsRequired();
-
         builder.Property(a => a.Telefone)
             .HasMaxLength(20)
             .IsRequired();
@@ -32,7 +28,15 @@ public sealed class AlunoConfiguration : IEntityTypeConfiguration<Aluno>
             .HasMaxLength(255)
             .IsRequired();        
 
+        builder.Property(a => a.NumeroMatricula)
+            .HasMaxLength(20)
+            .IsRequired();        
+
         // Índice de exclusividade
+        builder.HasIndex(a => a.NumeroMatricula)
+            .IsUnique()
+            .HasDatabaseName("UQ_TBAluno_NumeroMatricula");
+            
         builder.HasIndex(a => a.Telefone)
             .IsUnique()
             .HasDatabaseName("UQ_TBAluno_Telefone");

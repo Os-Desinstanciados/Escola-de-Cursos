@@ -26,9 +26,9 @@ public class ServicoInstrutor : ServicoBase<Instrutor>
 
         Instrutor novoInstrutor = new Instrutor(
             dto.Nome,
-            dto.Endereco,
             dto.Telefone,
-            dto.Email            
+            dto.Email,
+            dto.Graduacao
         );
 
         Result resultadoValidacao = ValidarEntidade(novoInstrutor);
@@ -51,9 +51,9 @@ public class ServicoInstrutor : ServicoBase<Instrutor>
 
         Instrutor instrutorAtualizado = new Instrutor(
             dto.Nome,
-            dto.Endereco,
             dto.Telefone,
-            dto.Email
+            dto.Email,
+            dto.Graduacao
         );
 
         Result resultadoValidacao = ValidarEntidade(instrutorAtualizado);
@@ -85,7 +85,7 @@ public class ServicoInstrutor : ServicoBase<Instrutor>
     {
         return repositorioInstrutor
             .SelecionarTodos()
-            .Select(a => new ListarInstrutoresDto(a.Id, a.Nome, a.Endereco, a.Telefone, a.Email))
+            .Select(a => new ListarInstrutoresDto(a.Id, a.Nome, a.Telefone, a.Email, a.Graduacao))
             .ToList();
     }
 
@@ -99,9 +99,9 @@ public class ServicoInstrutor : ServicoBase<Instrutor>
         return Result.Ok(new DetalhesInstrutorDto(
             instrutor.Id,
             instrutor.Nome,
-            instrutor.Endereco,
             instrutor.Telefone,
-            instrutor.Email
+            instrutor.Email,
+            instrutor.Graduacao
         ));
     }
 

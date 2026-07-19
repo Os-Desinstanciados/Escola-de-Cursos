@@ -13,12 +13,6 @@
     </div>
 
     <div class="mb-3">
-        <label asp-for="Endereco" class="form-label fw-semibold text-primary text-uppercase small">Endereço</label>
-        <input asp-for="Endereco" type="text" class="form-control">
-        <span asp-validation-for="Endereco" class="text-danger small fw-semibold"></span>
-    </div>
-
-    <div class="mb-3">
         <label asp-for="Telefone" class="form-label fw-semibold text-primary text-uppercase small">Telefone</label>
         <input asp-for="Telefone" type="text" class="form-control" placeholder="(99) 99999-9999">
         <span asp-validation-for="Telefone" class="text-danger small fw-semibold"></span>
@@ -28,6 +22,13 @@
         <label asp-for="Email" class="form-label fw-semibold text-primary text-uppercase small">E-mail</label>
         <input asp-for="Email" type="email" class="form-control" placeholder="nome@email.com">
         <span asp-validation-for="Email" class="text-danger small fw-semibold"></span>
+    </div>
+    
+
+    <div class="mb-3">
+        <label asp-for="Graduacao" class="form-label fw-semibold text-primary text-uppercase small">Graduação</label>
+        <input asp-for="Graduacao" type="graduacao" class="form-control" placeholder="Doutorado em SI">
+        <span asp-validation-for="Graduacao" class="text-danger small fw-semibold"></span>
     </div>
     
 

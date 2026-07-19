@@ -24,7 +24,6 @@ public class AlunoController(ServicoAluno servicoAluno, IMapper mapeador) : Cont
         CadastrarAlunoViewModel cadastrarVm = new CadastrarAlunoViewModel(
             string.Empty,
             string.Empty,
-            string.Empty,
             string.Empty            
         );
 

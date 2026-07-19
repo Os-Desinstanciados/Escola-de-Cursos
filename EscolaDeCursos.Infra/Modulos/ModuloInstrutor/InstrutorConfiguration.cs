@@ -10,34 +10,38 @@ public sealed class InstrutorConfiguration : IEntityTypeConfiguration<Instrutor>
     {
         builder.ToTable("TBInstrutor");
 
-        builder.HasKey(a => a.Id)
+        builder.HasKey(i => i.Id)
             .HasName("PK_TBInstrutor");
 
-        builder.Property(a => a.Id)
+        builder.Property(i => i.Id)
             .ValueGeneratedNever();
 
-        builder.Property(a => a.Nome)
+        builder.Property(i => i.Nome)
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.Property(a => a.Endereco)
-            .HasMaxLength(100)
-            .IsRequired();
-
-        builder.Property(a => a.Telefone)
+        builder.Property(i => i.Telefone)
             .HasMaxLength(20)
             .IsRequired();
 
-        builder.Property(a => a.Email)
+        builder.Property(i => i.Email)
             .HasMaxLength(255)
-            .IsRequired();        
+            .IsRequired();
+
+        builder.Property(i => i.Graduacao)
+            .HasMaxLength(100)
+            .IsRequired();
 
         // Índice de exclusividade
-        builder.HasIndex(a => a.Telefone)
+        builder.HasIndex(i => i.Nome)
+            .IsUnique()
+            .HasDatabaseName("UQ_TBInstrutor_Nome");
+
+        builder.HasIndex(i => i.Telefone)
             .IsUnique()
             .HasDatabaseName("UQ_TBInstrutor_Telefone");
-            
-        builder.HasIndex(a => a.Email)
+
+        builder.HasIndex(i => i.Email)
             .IsUnique()
             .HasDatabaseName("UQ_TBInstrutor_Email");
 

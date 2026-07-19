@@ -11,7 +11,7 @@
     <div class="alert alert-primary border-start border-primary border-4 rounded-3" role="alert">
         Deseja realmente excluir este aluno?
     </div>
-
+    
     <dl class="row mb-0">
         <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">ID</dt>
         <dd class="col-sm-8 text-break">@Model.Id</dd>
@@ -19,15 +19,14 @@
         <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Nome</dt>
         <dd class="col-sm-8">@Model.Nome</dd>
 
-        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Endereço</dt>
-        <dd class="col-sm-8">@Model.Endereco</dd>
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">E-mail</dt>
+        <dd class="col-sm-8 text-break">@Model.Email</dd>
 
         <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Telefone</dt>
         <dd class="col-sm-8">@Model.Telefone</dd>
 
-        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">E-mail</dt>
-        <dd class="col-sm-8 text-break">@Model.Email</dd>
-        
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Matrícula</dt>
+        <dd class="col-sm-8">@Model.NumeroMatricula</dd>
     </dl>
 
     <div class="d-flex justify-content-end gap-2 mt-4">
