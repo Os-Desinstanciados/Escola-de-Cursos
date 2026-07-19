@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace EscolaDeCursos.WebApp.Modulos.ModuloTurma;
 
-public record ListarTurmasViewModel(
+public record ListarTurmaViewModel(
     Guid Id,
     string Nome,
     DateTime DataInicio,

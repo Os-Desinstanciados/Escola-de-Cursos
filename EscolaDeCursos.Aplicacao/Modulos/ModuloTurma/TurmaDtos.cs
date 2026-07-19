@@ -1,42 +1,43 @@
-using System.Runtime.CompilerServices;
-
 namespace EscolaDeCursos.Aplicacao.Modulos.ModuloTurma;
 
-public record ListarTurmasDto(
+public record ListarTurmaDto(
     Guid Id,
     string Nome,
-    DateTime DataInicio,
-    DateTime DataTermino,
+    string NomeCurso,
+    string NomeInstrutor,
     int NumeroMaximoAlunos,
-    Guid InstrutorId,
-    string InstrutorNome    
+    DateOnly DataInicio,
+    DateOnly DataTermino,
+    int QuantidadeMatriculas
 );
 
 public record CadastrarTurmaDto(
     string Nome,
-    DateTime DataInicio,
-    DateTime DataTermino,
+    Guid CursoId,
+    Guid InstrutorId,
     int NumeroMaximoAlunos,
-    Guid InstrutorId    
+    DateOnly DataInicio,
+    DateOnly DataTermino
 );
 
 public record EditarTurmaDto(
     Guid Id,
     string Nome,
-    DateTime DataInicio,
-    DateTime DataTermino,
+    Guid CursoId,
+    Guid InstrutorId,
     int NumeroMaximoAlunos,
-    Guid InstrutorId    
+    DateOnly DataInicio,
+    DateOnly DataTermino
 );
 
 public record DetalhesTurmaDto(
     Guid Id,
     string Nome,
-    DateTime DataInicio,
-    DateTime DataTermino,
-    int NumeroMaximoAlunos,
+    Guid CursoId,
+    string NomeCurso,
     Guid InstrutorId,
-    string InstrutorNome
+    string NomeInstrutor,
+    int NumeroMaximoAlunos,
+    DateOnly DataInicio,
+    DateOnly DataTermino
 );
-
-public record OpcaoInstrutorDto(Guid Id, string Nome);

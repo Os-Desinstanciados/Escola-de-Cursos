@@ -7,14 +7,10 @@ public class TurmaProfile : Profile
 {
     public TurmaProfile()
     {
-        CreateMap<OpcaoInstrutorDto, OpcaoInstrutorViewModel>();
-        CreateMap<ListarTurmasDto, ListarTurmasViewModel>();
+        CreateMap<ListarTurmaDto, ListarTurmaViewModel>();
         CreateMap<CadastrarTurmaViewModel, CadastrarTurmaDto>();
         CreateMap<EditarTurmaViewModel, EditarTurmaDto>();
-
-        CreateMap<DetalhesTurmaDto, EditarTurmaViewModel>()
-            .ForCtorParam("Instrutores", opt => opt.MapFrom(_ => new List<OpcaoInstrutorViewModel>()));
-
+        CreateMap<DetalhesTurmaDto, EditarTurmaViewModel>();
         CreateMap<DetalhesTurmaDto, ExcluirTurmaViewModel>();
     }
 }

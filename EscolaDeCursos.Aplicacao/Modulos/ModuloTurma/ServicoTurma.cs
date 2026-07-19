@@ -1,39 +1,45 @@
 using FluentResults;
-using EscolaDeCursos.Aplicacao.Compartilhado;
-using EscolaDeCursos.Dominio.Modulos.ModuloTurma;
+using EscolaDeCursos.Dominio.Modulos.ModuloCurso;
 using EscolaDeCursos.Dominio.Modulos.ModuloInstrutor;
-using EscolaDeCursos.Dominio.Modulos.ModuloAluno;
+using EscolaDeCursos.Dominio.Modulos.ModuloTurma;
+using EscolaDeCursos.Aplicacao.Compartilhado;
 
 namespace EscolaDeCursos.Aplicacao.Modulos.ModuloTurma;
 
 public class ServicoTurma : ServicoBase<Turma>
 {
-    private readonly IRepositorioTurma repositorioTurma;   
-    private readonly IRepositorioInstrutor repositorioInstrutor;  
-       
+    private readonly IRepositorioTurma repositorioTurma;
+    private readonly IRepositorioCurso repositorioCurso;
+    private readonly IRepositorioInstrutor repositorioInstrutor;
 
     public ServicoTurma(
         IRepositorioTurma repositorioTurma,
-        IRepositorioInstrutor repositorioInstrutor               
+        IRepositorioCurso repositorioCurso,
+        IRepositorioInstrutor repositorioInstrutor
     )
     {
         this.repositorioTurma = repositorioTurma;
-        this.repositorioInstrutor = repositorioInstrutor;               
+        this.repositorioCurso = repositorioCurso;
+        this.repositorioInstrutor = repositorioInstrutor;
     }
 
     public Result Cadastrar(CadastrarTurmaDto dto)
-    { 
-        Result<Instrutor> resultadoInstrutor = SelecionarInstrutorRequired(dto.InstrutorId);
+    {
+        Result<Curso> resultadoCurso = SelecionarCurso(dto.CursoId);
+        if (resultadoCurso.IsFailed)
+            return resultadoCurso.ToResult();
 
+        Result<Instrutor> resultadoInstrutor = SelecionarInstrutor(dto.InstrutorId);
         if (resultadoInstrutor.IsFailed)
             return resultadoInstrutor.ToResult();
 
         Turma novaTurma = new Turma(
             dto.Nome,
-            dto.DataInicio,
-            dto.DataTermino,
+            resultadoCurso.Value,
+            resultadoInstrutor.Value,
             dto.NumeroMaximoAlunos,
-            resultadoInstrutor.Value            
+            dto.DataInicio,
+            dto.DataTermino
         );
 
         Result resultadoValidacao = ValidarEntidade(novaTurma);
@@ -47,18 +53,22 @@ public class ServicoTurma : ServicoBase<Turma>
     }
 
     public Result Editar(EditarTurmaDto dto)
-    {       
-        Result<Instrutor> resultadoInstrutor = SelecionarInstrutorRequired(dto.InstrutorId);
+    {
+        Result<Curso> resultadoCurso = SelecionarCurso(dto.CursoId);
+        if (resultadoCurso.IsFailed)
+            return resultadoCurso.ToResult();
 
+        Result<Instrutor> resultadoInstrutor = SelecionarInstrutor(dto.InstrutorId);
         if (resultadoInstrutor.IsFailed)
             return resultadoInstrutor.ToResult();
 
         Turma turmaAtualizada = new Turma(
             dto.Nome,
-            dto.DataInicio,
-            dto.DataTermino,
+            resultadoCurso.Value,
+            resultadoInstrutor.Value,
             dto.NumeroMaximoAlunos,
-            resultadoInstrutor.Value
+            dto.DataInicio,
+            dto.DataTermino
         );
 
         Result resultadoValidacao = ValidarEntidade(turmaAtualizada);
@@ -79,25 +89,29 @@ public class ServicoTurma : ServicoBase<Turma>
         Turma? turma = repositorioTurma.SelecionarPorId(id);
 
         if (turma == null)
-            return Falha(string.Empty, "Turma não encontrada.");        
+            return Falha(string.Empty, "Turma não encontrada.");
+
+        if (turma.Matriculas.Count > 0)
+            return Falha(string.Empty, "Não é possível excluir esta turma, pois ela possui matrículas vinculadas.");
 
         repositorioTurma.Excluir(id);
 
         return Result.Ok();
     }
 
-    public List<ListarTurmasDto> SelecionarTodos()
+    public List<ListarTurmaDto> SelecionarTodos()
     {
         return repositorioTurma
             .SelecionarTodos()
-            .Select(t => new ListarTurmasDto(
+            .Select(t => new ListarTurmaDto(
                 t.Id,
                 t.Nome,
+                t.Curso.Nome,
+                t.Instrutor.Nome,
+                t.NumeroMaximoAlunos,
                 t.DataInicio,
                 t.DataTermino,
-                t.NumeroMaximoAlunos,
-                t.Instrutor.Id,
-                t.Instrutor.Nome                
+                t.Matriculas.Count
             ))
             .ToList();
     }
@@ -112,31 +126,49 @@ public class ServicoTurma : ServicoBase<Turma>
         return Result.Ok(new DetalhesTurmaDto(
             turma.Id,
             turma.Nome,
-            turma.DataInicio,
-            turma.DataTermino,
-            turma.NumeroMaximoAlunos,
+            turma.Curso.Id,
+            turma.Curso.Nome,
             turma.Instrutor.Id,
-            turma.Instrutor.Nome            
+            turma.Instrutor.Nome,
+            turma.NumeroMaximoAlunos,
+            turma.DataInicio,
+            turma.DataTermino
         ));
-    } 
-    
-    public List<OpcaoInstrutorDto> SelecionarInstrutores()
+    }
+
+    public List<OpcaoCursoTurmaDto> SelecionarCursos()
     {
-        return repositorioInstrutor
+        return repositorioCurso
             .SelecionarTodos()
-            .Select(c => new OpcaoInstrutorDto(c.Id, c.Nome))
+            .Select(c => new OpcaoCursoTurmaDto(c.Id, c.Nome))
             .ToList();
     }
 
-    private Result<Instrutor> SelecionarInstrutorRequired(Guid? instrutorId)
+    public List<OpcaoInstrutorTurmaDto> SelecionarInstrutores()
     {
-        if (instrutorId == null || instrutorId == Guid.Empty)
-            return Result.Fail<Instrutor>(new Error("Selecione um contato válido.").WithMetadata("Campo", nameof(CadastrarTurmaDto.InstrutorId)));
-
-        Instrutor? instrutor = repositorioInstrutor.SelecionarPorId(instrutorId.Value);
-      
-
-        return Result.Ok<Instrutor>(instrutor);
+        return repositorioInstrutor
+            .SelecionarTodos()
+            .Select(i => new OpcaoInstrutorTurmaDto(i.Id, i.Nome))
+            .ToList();
     }
-       
+
+    private Result<Curso> SelecionarCurso(Guid cursoId)
+    {
+        Curso? curso = repositorioCurso.SelecionarPorId(cursoId);
+
+        if (curso == null)
+            return Result.Fail<Curso>(new Error("Selecione um curso válido.").WithMetadata("Campo", nameof(CadastrarTurmaDto.CursoId)));
+
+        return Result.Ok(curso);
+    }
+
+    private Result<Instrutor> SelecionarInstrutor(Guid instrutorId)
+    {
+        Instrutor? instrutor = repositorioInstrutor.SelecionarPorId(instrutorId);
+
+        if (instrutor == null)
+            return Result.Fail<Instrutor>(new Error("Selecione um instrutor válido.").WithMetadata("Campo", nameof(CadastrarTurmaDto.InstrutorId)));
+
+        return Result.Ok(instrutor);
+    }
 }

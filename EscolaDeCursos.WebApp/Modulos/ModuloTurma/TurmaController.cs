@@ -1,19 +1,23 @@
 using AutoMapper;
 using FluentResults;
-using EscolaDeCursos.WebApp.Compartilhado.Extensions;
 using EscolaDeCursos.Aplicacao.Modulos.ModuloTurma;
+using EscolaDeCursos.WebApp.Compartilhado.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EscolaDeCursos.WebApp.Modulos.ModuloTurma;
 
-public class TurmaController(ServicoTurma servicoTurma, IMapper mapeador) : Controller
+public class TurmaController(
+    ServicoTurma servicoTurma,
+    IMapper mapeador
+) : Controller
 {
     [HttpGet]
     public ActionResult Listar()
     {
-        List<ListarTurmasDto> dtos = servicoTurma.SelecionarTodos();
+        List<ListarTurmaDto> dtos = servicoTurma.SelecionarTodos();
 
-        List<ListarTurmasViewModel> listarVms = mapeador.Map<List<ListarTurmasViewModel>>(dtos);
+        List<ListarTurmaViewModel> listarVms = mapeador.Map<List<ListarTurmaViewModel>>(dtos);
 
         return View(listarVms);
     }
@@ -24,11 +28,13 @@ public class TurmaController(ServicoTurma servicoTurma, IMapper mapeador) : Cont
         CadastrarTurmaViewModel cadastrarVm = new CadastrarTurmaViewModel(
             string.Empty,
             DateTime.Today,
-            DateTime.Today,            
+            DateTime.Today,
             0,
-            Guid.Empty,            
-            SelecionarInstrutores()
+            Guid.Empty,
+            new List<OpcaoInstrutorViewModel>()
         );
+
+        CarregarCursosEInstrutores();
 
         return View(cadastrarVm);
     }
@@ -37,7 +43,10 @@ public class TurmaController(ServicoTurma servicoTurma, IMapper mapeador) : Cont
     public ActionResult Cadastrar(CadastrarTurmaViewModel cadastrarVm)
     {
         if (!ModelState.IsValid)
-            return View(cadastrarVm with { Instrutores = SelecionarInstrutores() });
+        {
+            CarregarCursosEInstrutores();
+            return View(cadastrarVm);
+        }
 
         CadastrarTurmaDto dto = mapeador.Map<CadastrarTurmaDto>(cadastrarVm);
 
@@ -46,8 +55,8 @@ public class TurmaController(ServicoTurma servicoTurma, IMapper mapeador) : Cont
         if (resultado.IsFailed)
         {
             ModelState.AddModelError(resultado);
-
-            return View(cadastrarVm with { Instrutores = SelecionarInstrutores() });
+            CarregarCursosEInstrutores();
+            return View(cadastrarVm);
         }
 
         return RedirectToAction(nameof(Listar));
@@ -61,12 +70,12 @@ public class TurmaController(ServicoTurma servicoTurma, IMapper mapeador) : Cont
         if (resultado.IsFailed)
         {
             TempData.AddErrorMessage(resultado);
-
             return RedirectToAction(nameof(Listar));
         }
 
-        EditarTurmaViewModel editarVm =
-            mapeador.Map<EditarTurmaViewModel>(resultado.Value) with { Instrutores = SelecionarInstrutores() };
+        EditarTurmaViewModel editarVm = mapeador.Map<EditarTurmaViewModel>(resultado.Value);
+
+        CarregarCursosEInstrutores();
 
         return View(editarVm);
     }
@@ -75,7 +84,10 @@ public class TurmaController(ServicoTurma servicoTurma, IMapper mapeador) : Cont
     public ActionResult Editar(EditarTurmaViewModel editarVm)
     {
         if (!ModelState.IsValid)
-            return View(editarVm with { Instrutores = SelecionarInstrutores() });
+        {
+            CarregarCursosEInstrutores();
+            return View(editarVm);
+        }
 
         EditarTurmaDto dto = mapeador.Map<EditarTurmaDto>(editarVm);
 
@@ -84,8 +96,8 @@ public class TurmaController(ServicoTurma servicoTurma, IMapper mapeador) : Cont
         if (resultado.IsFailed)
         {
             ModelState.AddModelError(resultado);
-
-            return View(editarVm with { Instrutores = SelecionarInstrutores() });
+            CarregarCursosEInstrutores();
+            return View(editarVm);
         }
 
         return RedirectToAction(nameof(Listar));
@@ -99,7 +111,6 @@ public class TurmaController(ServicoTurma servicoTurma, IMapper mapeador) : Cont
         if (resultado.IsFailed)
         {
             TempData.AddErrorMessage(resultado);
-
             return RedirectToAction(nameof(Listar));
         }
 
@@ -119,11 +130,17 @@ public class TurmaController(ServicoTurma servicoTurma, IMapper mapeador) : Cont
         return RedirectToAction(nameof(Listar));
     }
 
-    private List<OpcaoInstrutorViewModel> SelecionarInstrutores()
+    private void CarregarCursosEInstrutores()
     {
-        List<OpcaoInstrutorDto> dtos = servicoTurma.SelecionarInstrutores();
+        List<OpcaoCursoTurmaDto> cursos = servicoTurma.SelecionarCursos();
+        List<OpcaoInstrutorTurmaDto> instrutores = servicoTurma.SelecionarInstrutores();
 
-        return mapeador.Map<List<OpcaoInstrutorViewModel>>(dtos);
+        ViewBag.Cursos = cursos
+            .Select(c => new SelectListItem(c.Nome, c.Id.ToString()))
+            .ToList();
+
+        ViewBag.Instrutores = instrutores
+            .Select(i => new SelectListItem(i.Nome, i.Id.ToString()))
+            .ToList();
     }
 }
-

@@ -4,16 +4,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EscolaDeCursos.Infra.Modulos.ModuloTurma;
 
-public sealed class RepositorioTurmaEmOrm(EscolaDeCursosDbContext dbContext) :
-    RepositorioBaseEmOrm<Turma>(dbContext), IRepositorioTurma
+public sealed class RepositorioTurmaEmOrm(EscolaDeCursosDbContext dbContext
+) : RepositorioBaseEmOrm<Turma>(dbContext), IRepositorioTurma
 {
-    public override List<Turma> SelecionarTodos()
+    public override Turma? SelecionarPorId(Guid idSelecionado)
     {
-        return registros.OrderBy(i => i.Nome).ToList();
+        return registros
+            .Include(t => t.Curso)
+            .Include(t => t.Instrutor)
+            .Include(t => t.Matriculas)
+                .ThenInclude(m => m.Aluno)
+            .SingleOrDefault(t => t.Id == idSelecionado);
     }
 
-    public override List<Turma> Filtrar(Func<Turma, bool> filtro)
+    public override List<Turma> SelecionarTodos()
     {
-        return registros.Where(filtro).OrderBy(i => i.Nome).ToList();
+        return registros
+            .Include(t => t.Curso)
+            .Include(t => t.Instrutor)
+            .Include(t => t.Matriculas)
+            .OrderBy(t => t.DataInicio)
+            .ThenBy(t => t.Nome)
+            .ToList();
     }
 }
