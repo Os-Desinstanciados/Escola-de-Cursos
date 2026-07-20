@@ -101,7 +101,7 @@ public class ServicoCurso : ServicoBase<Curso>
                 c.Nome,
                 c.Nivel,
                 c.CargaHoraria,
-                c.Categoria.Nome
+                c.Categoria!.Nome
             ))
             .ToList();
     }
@@ -118,7 +118,7 @@ public class ServicoCurso : ServicoBase<Curso>
             curso.Nome,
             curso.Nivel,
             curso.CargaHoraria,
-            curso.Categoria.Id,
+            curso.Categoria!.Id,
             curso.Categoria.Nome
         ));
     }
