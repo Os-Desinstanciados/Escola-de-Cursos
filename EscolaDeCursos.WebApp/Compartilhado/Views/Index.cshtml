@@ -1,32 +1,69 @@
 @{
     Layout = "_Layout";
-    ViewBag.Titulo = "Página Inicial";
+    ViewBag.Titulo = "Início";
 }
 
-<div class="row g-2">
-    <div class="col-lg-7">
-        <h1 class="display-5 fw-semibold mb-3">Escola de Cursos</h1>
-        <p class="lead text-secondary mb-4">
-            Organize sua vida pessoal e/ou profissional conosco.
-        </p>
-
-        <div class="d-flex flex-wrap gap-2">
-            @* <a class="btn btn-primary rounded-pill px-4" asp-controller="Contato" asp-action="Listar">Contatos</a> *@
+<div class="row g-4 pb-4">
+    
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-primary-subtle shadow-sm">
+            <div class="card-body text-center p-4">
+                <h5 class="card-title text-primary">Alunos</h5>
+                <p class="card-text text-secondary">Gerencie o cadastro de alunos</p>
+                <a class="btn btn-outline-primary rounded-pill px-4" asp-controller="Aluno" asp-action="Listar">Acessar</a>
+            </div>
         </div>
-
     </div>
 
-    <div class="col-lg-5">
-        <div class="card border-primary-subtle shadow-sm">
-            <div class="card-body p-4">
-                <h3 class="h5 text-primary mb-3">Módulos disponíveis</h3>
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-primary-subtle shadow-sm">
+            <div class="card-body text-center p-4">
+                <h5 class="card-title text-primary">Instrutores</h5>
+                <p class="card-text text-secondary">Cadastre os instrutores da escola</p>
+                <a class="btn btn-outline-primary rounded-pill px-4" asp-controller="Instrutor" asp-action="Listar">Acessar</a>
+            </div>
+        </div>
+    </div>
 
-                <div class="list-group">
-                    @* <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" asp-controller="Contato" asp-action="Listar">
-                        Controle de Contatos
-                        <span class="badge text-bg-primary rounded-pill">Abrir</span>
-                    </a> *@
-                </div>
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-primary-subtle shadow-sm">
+            <div class="card-body text-center p-4">
+                <h5 class="card-title text-primary">Categorias</h5>
+                <p class="card-text text-secondary">Gerencie as categorias dos cursos</p>
+                <a class="btn btn-outline-primary rounded-pill px-4" asp-controller="Categoria" asp-action="Listar">Acessar</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-primary-subtle shadow-sm">
+            <div class="card-body text-center p-4">
+                <h5 class="card-title text-primary">Cursos</h5>
+                <p class="card-text text-secondary">Gerencie os cursos e suas aulas</p>
+                <a class="btn btn-outline-primary rounded-pill px-4" asp-controller="Curso" asp-action="Listar">Acessar</a>
+            </div>
+        </div>
+    </div>
+
+    
+
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-primary-subtle shadow-sm">
+            <div class="card-body text-center p-4">
+                <h5 class="card-title text-primary">Turmas</h5>
+                <p class="card-text text-secondary">Gerencie as turmas</p>
+                <a class="btn btn-outline-primary rounded-pill px-4" asp-controller="Turma" asp-action="Listar">Acessar</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-primary-subtle shadow-sm">
+            <div class="card-body text-center p-4">
+                <h5 class="card-title text-primary">Matrículas</h5>
+                <p class="card-text text-secondary">Gerencie as matrículas dos alunos</p>
+                <a class="btn btn-outline-primary rounded-pill px-4" asp-controller="Matricula" asp-action="Listar">Acessar</a>
             </div>
         </div>
     </div>
