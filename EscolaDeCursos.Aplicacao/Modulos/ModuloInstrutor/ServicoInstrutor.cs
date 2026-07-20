@@ -2,18 +2,21 @@ using FluentResults;
 using EscolaDeCursos.Aplicacao.Compartilhado;
 using EscolaDeCursos.Dominio.Modulos.ModuloInstrutor;
 using EscolaDeCursos.Aplicacao.Modulos.ModuloInstrutor;
+using EscolaDeCursos.Dominio.Modulos.ModuloTurma;
 
 namespace EscolaDeCursos.Aplicacao.Modulos.ModuloInstrutor;
 
 public class ServicoInstrutor : ServicoBase<Instrutor>
 {
-    private readonly IRepositorioInstrutor repositorioInstrutor;   
+    private readonly IRepositorioInstrutor repositorioInstrutor;
+    private readonly IRepositorioTurma repositorioTurma;
 
-    public ServicoInstrutor(
-        IRepositorioInstrutor repositorioInstrutor       
+    public ServicoInstrutor(IRepositorioInstrutor repositorioInstrutor,
+        IRepositorioTurma repositorioTurma
     )
     {
-        this.repositorioInstrutor = repositorioInstrutor;       
+        this.repositorioInstrutor = repositorioInstrutor;
+        this.repositorioTurma = repositorioTurma;
     }
 
     public Result Cadastrar(CadastrarInstrutorDto dto)
@@ -74,7 +77,17 @@ public class ServicoInstrutor : ServicoBase<Instrutor>
         Instrutor? instrutor = repositorioInstrutor.SelecionarPorId(id);
 
         if (instrutor == null)
-            return Falha(string.Empty, "Instrutor não encontrado.");        
+            return Falha(string.Empty, "Instrutor não encontrado.");
+
+        bool possuiTurmas = repositorioTurma
+            .SelecionarTodos()
+            .Any(t => t.Instrutor.Id == id);
+
+        if (possuiTurmas)
+            return Falha(
+                string.Empty,
+                "Não é possível excluir um instrutor que possui turmas cadastradas."
+            );
 
         repositorioInstrutor.Excluir(id);
 
@@ -127,7 +140,7 @@ public class ServicoInstrutor : ServicoBase<Instrutor>
                 i.Id != idIgnorado &&
                 NormalizarTelefone(i.Telefone) == telefoneNormalizado
             );
-    }    
+    }
 
     private static string NormalizarEmail(string email)
     {

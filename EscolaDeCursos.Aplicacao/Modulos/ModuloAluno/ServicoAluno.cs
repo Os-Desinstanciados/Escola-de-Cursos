@@ -1,18 +1,21 @@
 using FluentResults;
 using EscolaDeCursos.Aplicacao.Compartilhado;
 using EscolaDeCursos.Dominio.Modulos.ModuloAluno;
+using EscolaDeCursos.Dominio.Modulos.ModuloMatricula;
 
 namespace EscolaDeCursos.Aplicacao.Modulos.ModuloAluno;
 
 public class ServicoAluno : ServicoBase<Aluno>
 {
-    private readonly IRepositorioAluno repositorioAluno;   
+    private readonly IRepositorioAluno repositorioAluno;
+    private readonly IRepositorioMatricula repositorioMatricula;
 
-    public ServicoAluno(
-        IRepositorioAluno repositorioAluno       
+    public ServicoAluno(IRepositorioAluno repositorioAluno,
+        IRepositorioMatricula repositorioMatricula
     )
     {
-        this.repositorioAluno = repositorioAluno;       
+        this.repositorioAluno = repositorioAluno;
+        this.repositorioMatricula = repositorioMatricula;
     }
 
     public Result Cadastrar(CadastrarAlunoDto dto)
@@ -71,7 +74,17 @@ public class ServicoAluno : ServicoBase<Aluno>
         Aluno? aluno = repositorioAluno.SelecionarPorId(id);
 
         if (aluno == null)
-            return Falha(string.Empty, "Aluno não encontrado.");        
+            return Falha(string.Empty, "Aluno não encontrado.");
+
+        bool possuiMatriculas = repositorioMatricula
+            .SelecionarTodos()
+            .Any(m => m.Aluno.Id == id);
+
+        if (possuiMatriculas)
+            return Falha(
+                string.Empty,
+                "Não é possível excluir um aluno que possui matrículas cadastradas."
+            );
 
         repositorioAluno.Excluir(id);
 
@@ -124,7 +137,7 @@ public class ServicoAluno : ServicoBase<Aluno>
                 a.Id != idIgnorado &&
                 NormalizarTelefone(a.Telefone) == telefoneNormalizado
             );
-    }    
+    }
 
     private static string NormalizarEmail(string email)
     {
