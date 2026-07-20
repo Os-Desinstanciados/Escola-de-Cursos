@@ -7,6 +7,10 @@ using EscolaDeCursos.Dominio.Modulos.ModuloCurso;
 using EscolaDeCursos.Dominio.Modulos.ModuloAluno;
 using EscolaDeCursos.Dominio.Modulos.ModuloInstrutor;
 using Microsoft.EntityFrameworkCore;
+using EscolaDeCursos.Dominio.Modulos.ModuloTurma;
+using EscolaDeCursos.Dominio.Modulos.ModuloMatricula;
+using EscolaDeCursos.Infra.Modulos.ModuloTurma;
+using EscolaDeCursos.Infra.Modulos.ModuloMatricula;
 
 namespace EscolaDeCursos.Infra.Compartilhado.Orm;
 
@@ -19,6 +23,8 @@ public sealed class EscolaDeCursosDbContext(
     public DbSet<Categoria> Categorias => Set<Categoria>();
     public DbSet<Curso> Cursos => Set<Curso>();
     public DbSet<Aula> Aulas => Set<Aula>();
+    public DbSet<Turma> Turmas => Set<Turma>();
+    public DbSet<Matricula> Matriculas => Set<Matricula>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -27,5 +33,7 @@ public sealed class EscolaDeCursosDbContext(
         modelBuilder.ApplyConfiguration(new AlunoConfiguration());
         modelBuilder.ApplyConfiguration(new InstrutorConfiguration());
         modelBuilder.ApplyConfiguration(new AulaConfiguration());
+        modelBuilder.ApplyConfiguration(new TurmaConfiguration());
+        modelBuilder.ApplyConfiguration(new MatriculaConfiguration());
     }
 }

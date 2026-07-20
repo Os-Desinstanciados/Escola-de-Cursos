@@ -27,11 +27,11 @@ public class TurmaController(
     {
         CadastrarTurmaViewModel cadastrarVm = new CadastrarTurmaViewModel(
             string.Empty,
-            DateTime.Today,
-            DateTime.Today,
-            0,
-            Guid.Empty,
-            new List<OpcaoInstrutorViewModel>()
+            null,
+            null,
+            null,
+            null,
+            null
         );
 
         CarregarCursosEInstrutores();

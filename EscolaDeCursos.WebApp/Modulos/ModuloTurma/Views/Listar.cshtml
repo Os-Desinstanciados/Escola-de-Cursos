@@ -17,7 +17,7 @@
 @if (Model.Count == 0)
 {
     <div class="alert alert-primary border-start border-primary border-4 rounded-3" role="alert">
-        Nenhum turma cadastrada.
+        Nenhuma turma cadastrada.
     </div>
 }
 else
@@ -30,21 +30,21 @@ else
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
                             <h5 class="card-title mb-0">@t.Nome</h5>
-                            <span class="badge text-bg-primary rounded-pill">@t.Id.ToString().Substring(0, 8)</span>
+                            <span class="badge text-bg-primary rounded-pill">@t.QuantidadeMatriculas/@t.NumeroMaximoAlunos</span>
                         </div>
 
                         <dl class="row g-2 mb-4">
-                            <dt class="col-5 text-secondary fw-semibold">Data de Início</dt>
-                            <dd class="col-7 mb-0">@t.DataInicio.ToString("dd/MM/yyyy")</dd>
-
-                            <dt class="col-5 text-secondary fw-semibold">Data de Término</dt>
-                            <dd class="col-7 mb-0">@t.DataTermino.ToString("dd/MM/yyyy")</dd>
-
-                            <dt class="col-5 text-secondary fw-semibold">Número Máximo de Alunos</dt>
-                            <dd class="col-7 mb-0 text-break">@t.NumeroMaximoAlunos.ToString()</dd>
+                            <dt class="col-5 text-secondary fw-semibold">Curso</dt>
+                            <dd class="col-7 mb-0">@t.NomeCurso</dd>
 
                             <dt class="col-5 text-secondary fw-semibold">Instrutor</dt>
-                            <dd class="col-7 mb-0 text-break">@(t.InstrutorNome)</dd>
+                            <dd class="col-7 mb-0">@t.NomeInstrutor</dd>
+
+                            <dt class="col-5 text-secondary fw-semibold">Início</dt>
+                            <dd class="col-7 mb-0">@t.DataInicio.ToString("dd/MM/yyyy")</dd>
+
+                            <dt class="col-5 text-secondary fw-semibold">Término</dt>
+                            <dd class="col-7 mb-0">@t.DataTermino.ToString("dd/MM/yyyy")</dd>
                         </dl>
 
                         <div class="d-flex flex-wrap gap-2 mt-auto justify-content-end">

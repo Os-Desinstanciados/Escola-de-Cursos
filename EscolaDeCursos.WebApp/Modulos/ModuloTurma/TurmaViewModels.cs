@@ -1,16 +1,16 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace EscolaDeCursos.WebApp.Modulos.ModuloTurma;
 
 public record ListarTurmaViewModel(
     Guid Id,
     string Nome,
-    DateTime DataInicio,
-    DateTime DataTermino,
+    string NomeCurso,
+    string NomeInstrutor,
     int NumeroMaximoAlunos,
-    Guid InstrutorId,
-    string InstrutorNome
+    DateOnly DataInicio,
+    DateOnly DataTermino,
+    int QuantidadeMatriculas
 );
 
 public record CadastrarTurmaViewModel(
@@ -18,21 +18,21 @@ public record CadastrarTurmaViewModel(
     [StringLength(100, MinimumLength = 2, ErrorMessage = "O campo \"Nome\" deve conter entre 2 e 100 caracteres.")]
     string Nome,
 
+    [Required(ErrorMessage = "O campo \"Curso\" deve ser preenchido.")]
+    Guid? CursoId,
+
+    [Required(ErrorMessage = "O campo \"Instrutor\" deve ser preenchido.")]
+    Guid? InstrutorId,
+
+    [Required(ErrorMessage = "O campo \"Número Máximo de Alunos\" deve ser preenchido.")]
+    [Range(1, 100, ErrorMessage = "O campo \"Número Máximo de Alunos\" deve estar entre 1 e 100.")]
+    int? NumeroMaximoAlunos,
+
     [Required(ErrorMessage = "O campo \"Data de Início\" deve ser preenchido.")]
-    [DataType(DataType.Date)]
-    DateTime DataInicio,
+    DateOnly? DataInicio,
 
     [Required(ErrorMessage = "O campo \"Data de Término\" deve ser preenchido.")]
-    [DataType(DataType.Date)]
-    DateTime DataTermino,
-
-    [Range(0.01, double.MaxValue, ErrorMessage = "O campo \"Número Máximo de Alunos\" deve ser maior que zero.")]
-    int NumeroMaximoAlunos,
-
-    Guid InstrutorId,
-
-    [ValidateNever]
-    List<OpcaoInstrutorViewModel> Instrutores
+    DateOnly? DataTermino
 );
 
 public record EditarTurmaViewModel(
@@ -42,31 +42,29 @@ public record EditarTurmaViewModel(
     [StringLength(100, MinimumLength = 2, ErrorMessage = "O campo \"Nome\" deve conter entre 2 e 100 caracteres.")]
     string Nome,
 
+    [Required(ErrorMessage = "O campo \"Curso\" deve ser preenchido.")]
+    Guid? CursoId,
+
+    [Required(ErrorMessage = "O campo \"Instrutor\" deve ser preenchido.")]
+    Guid? InstrutorId,
+
+    [Required(ErrorMessage = "O campo \"Número Máximo de Alunos\" deve ser preenchido.")]
+    [Range(1, 100, ErrorMessage = "O campo \"Número Máximo de Alunos\" deve estar entre 1 e 100.")]
+    int? NumeroMaximoAlunos,
+
     [Required(ErrorMessage = "O campo \"Data de Início\" deve ser preenchido.")]
-    [DataType(DataType.Date)]
-    DateTime DataInicio,
+    DateOnly? DataInicio,
 
     [Required(ErrorMessage = "O campo \"Data de Término\" deve ser preenchido.")]
-    [DataType(DataType.Date)]
-    DateTime DataTermino,
-
-    [Range(0.01, double.MaxValue, ErrorMessage = "O campo \"Número Máximo de Alunos\" deve ser maior que zero.")]
-    int NumeroMaximoAlunos,
-
-    Guid InstrutorId,
-
-    [ValidateNever]
-    List<OpcaoInstrutorViewModel> Instrutores
+    DateOnly? DataTermino
 );
 
 public record ExcluirTurmaViewModel(
     Guid Id,
     string Nome,
-    DateTime DataInicio,
-    DateTime DataTermino,
+    string NomeCurso,
+    string NomeInstrutor,
     int NumeroMaximoAlunos,
-    Guid InstrutorId,
-    string InstrutorNome
+    DateOnly DataInicio,
+    DateOnly DataTermino
 );
-
-public record OpcaoInstrutorViewModel(Guid Id, string Nome);
