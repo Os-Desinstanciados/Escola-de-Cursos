@@ -58,7 +58,7 @@ jobs:
       - name: Configure Azure Web App settings
         shell: pwsh
         run: |
-          az webapp config appsettings setr `
+          az webapp config appsettings set `
             --resource-group "escola-de-cursos" `
             --name "escola-de-cursos" `
             --settings `
