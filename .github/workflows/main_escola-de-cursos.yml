@@ -55,6 +55,18 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_B7B67C991DDE491DBE06DF68737DF13E }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_6A957E05F0FE43C981CA9FD1EEE6167C }}
 
+      - name: Configure Azure Web App settings
+        shell: pwsh
+        run: |
+          az webapp config appsettings setr `
+            --resource-group "escola-de-cursos" `
+            --name "escola-de-cursos" `
+            --settings `
+              "ASPNETCORE_ENVIRONMNET=Production" `
+              "ConnectionStrings_SqlServerEF=${{ secrets.AZURE_SQL_CONNECTION_STRING }}" `
+              "Infra__NewRelic_LicenseKey=${{ secrets.NEWRELIC_LICENSEKEY }}" `
+              "Apresentacao__AutoMapper_licenseKey=${{ secrets.AUTOMAPPER_KEY }}"
+        
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
