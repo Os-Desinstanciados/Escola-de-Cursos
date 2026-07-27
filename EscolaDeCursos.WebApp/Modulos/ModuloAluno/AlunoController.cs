@@ -3,9 +3,11 @@ using FluentResults;
 using EscolaDeCursos.WebApp.Compartilhado.Extensions;
 using EscolaDeCursos.Aplicacao.Modulos.ModuloAluno;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EscolaDeCursos.WebApp.Modulos.ModuloAluno;
 
+[Authorize]
 public class AlunoController(ServicoAluno servicoAluno, IMapper mapeador) : Controller
 {
     [HttpGet]

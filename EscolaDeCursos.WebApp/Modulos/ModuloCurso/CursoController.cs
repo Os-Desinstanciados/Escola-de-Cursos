@@ -3,11 +3,13 @@ using EscolaDeCursos.Aplicacao.Modulos.ModuloCurso;
 using EscolaDeCursos.Dominio.Modulos.ModuloCurso;
 using EscolaDeCursos.WebApp.Compartilhado.Extensions;
 using FluentResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EscolaDeCursos.WebApp.Modulos.ModuloCurso;
 
+[Authorize]
 public class CursoController(
     ServicoCurso servicoCurso,
     ServicoAula servicoAula,

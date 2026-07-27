@@ -3,9 +3,11 @@ using FluentResults;
 using EscolaDeCursos.WebApp.Compartilhado.Extensions;
 using EscolaDeCursos.Aplicacao.Modulos.ModuloInstrutor;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EscolaDeCursos.WebApp.Modulos.ModuloInstrutor;
 
+[Authorize]
 public class InstrutorController(ServicoInstrutor servicoInstrutor, IMapper mapeador) : Controller
 {
     [HttpGet]

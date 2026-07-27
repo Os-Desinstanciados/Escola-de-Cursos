@@ -4,9 +4,11 @@ using EscolaDeCursos.Aplicacao.Modulos.ModuloTurma;
 using EscolaDeCursos.WebApp.Compartilhado.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EscolaDeCursos.WebApp.Modulos.ModuloTurma;
 
+[Authorize]
 public class TurmaController(
     ServicoTurma servicoTurma,
     IMapper mapeador

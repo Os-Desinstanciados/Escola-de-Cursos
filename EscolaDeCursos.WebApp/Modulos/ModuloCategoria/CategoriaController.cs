@@ -3,9 +3,11 @@ using FluentResults;
 using EscolaDeCursos.WebApp.Compartilhado.Extensions;
 using EscolaDeCursos.Aplicacao.Modulos.ModuloCategoria;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EscolaDeCursos.WebApp.Modulos.ModuloCategoria.Apresentacao;
 
+[Authorize]
 public class CategoriaController(
     ServicoCategoria servicoCategoria,
     IMapper mapeador

@@ -6,9 +6,11 @@ using EscolaDeCursos.Aplicacao.Modulos.ModuloTurma;
 using EscolaDeCursos.WebApp.Compartilhado.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EscolaDeCursos.WebApp.Modulos.ModuloMatricula;
 
+[Authorize]
 public class MatriculaController(
     ServicoMatricula servicoMatricula,
     ServicoTurma servicoTurma,
