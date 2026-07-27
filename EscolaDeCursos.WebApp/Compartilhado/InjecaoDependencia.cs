@@ -1,4 +1,7 @@
+using EscolaDeCursos.Dominio.Compartilhado.Identity;
+using EscolaDeCursos.WebApp.Compartilhado.Identity;
 using EscolaDeCursos.WebApp.Compartilhado.Mapping;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace EscolaDeCursos.WebApp.Compartilhado;
@@ -15,25 +18,33 @@ public static class InjecaoDependencia
             // Reseta a configuração padrão do MVC
             options.ViewLocationFormats.Clear();
 
-            // Localização das Views dos módulos: Modulos/ModuloCaixa/Apresentacao/Views/Listar.cshtml
+            // Localização das Views dos módulos: Modulos/ModuloCaixa/Views/Listar.cshtml
             options.ViewLocationFormats.Add("/Modulos/Modulo{1}/Views/{0}.cshtml");
 
-            // Localização das Views compartilhadas: /Compartilhado/Apresentacao/Views/_Layout.cshtml
+            // Localização das Views compartilhadas: /Compartilhado/Views/_Layout.cshtml
             options.ViewLocationFormats.Add("/Compartilhado/Views/{0}.cshtml");
         });
 
-        services.AddAuthentication(option =>
+        services.AddAuthentication(options =>
         {
-           option.DefaultScheme = IdentityConstants.ApplicationScheme;
-           option.DefaultChallengeScheme = IdentityConstants.ApplicationScheme; 
-           option.DefaultSignInScheme = IdentityConstants.ApplicationScheme; 
+            options.DefaultScheme = IdentityConstants.ApplicationScheme;
+            options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+            options.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
         }).AddCookie(IdentityConstants.ApplicationScheme, cookieOptions =>
         {
             cookieOptions.LoginPath = "/Autenticacao/Entrar";
-            cookieOptions.AccessDeniedPath= "/Autenticacao/Entrar";
+            cookieOptions.AccessDeniedPath = "/Autenticacao/Entrar";
         });
 
-        services.AddAuthorization();
+        services.AddAuthorization(options =>
+        {
+            options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+        });
+
+        services.AddHttpContextAccessor();
+        services.AddScoped<IUserProvider, UserProvider>();
 
         services.AddAutoMapper(mapperConfig =>
         {
